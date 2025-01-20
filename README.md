@@ -30,7 +30,7 @@ La plateforme doit permettre à tout usager intéressé de devenir membre pour a
 
 Chaque membre doit pouvoir publier des enchères.
 
-###  Enchères
+### Enchères
 
 Chaque membre doit pouvoir sélectionner ses enchères favorites et les visualiser.
 
@@ -42,7 +42,7 @@ Il s’agit des enchères recommandées par Lord, on doit pouvoir accéder à ce
 
 La plateforme doit permettre à tout usager de parcourir les enchères, actives ou archivées, en fonction de ses intérêts pour lui faciliter la tâche de trouver le timbre qui lui fait envie. Ses intérêts, sans être exhaustif, sont de l’ordre du pays d’origine, de l’année de publication, de la condition, etc.
 
-###  Placer des offres
+### Placer des offres
 
 La plateforme doit permettre à tout membre de placer des offres, à répétition s’il le souhaite, sur une ou des enchères. Les offres en cours et leur état devraient être accessibles dans la section « Profil » du membre.
 
@@ -64,32 +64,32 @@ Certains contenus sont nécessaires au bon fonctionnement de la plateforme. Ces 
 
 #### Entité « Timbre »
 
-● Nom
-● Date de création
-● Couleur(s)
-● Pays d’origine
-● Images
+- Nom
+- Date de création
+- Couleur(s)
+- Pays d’origine
+- Images
     o Image principale
     o Images supplémentaires
-● Condition
+- Condition
     o Parfaite
     o Excellente
     o Bonne
     o Moyenne
     o Endommagé
-● Tirage
-● Dimensions
-● Certifié
+- Tirage
+- Dimensions
+- Certifié
     o Oui
     o Non
 
 #### Entité « Enchère »
 
-● Période d’activité
+- Période d’activité
     o Date de début
     o Date de fin
-● Prix plancher
-● Coups de cœur du Lord
+- Prix plancher
+- Coups de cœur du Lord
 Les entités définies ci-dessus sont requises au minimum. Il se pourrait que d’autres besoins émergent
 en cours de conception. Nous vous rappelons que nous sommes aussi ouverts aux propositions.
 
@@ -115,24 +115,25 @@ Nous sommes ouverts aux suggestions. En fait, nous désirons que vous nous propo
 ### Pages secondaires
 
 Les pages ci-dessous ne doivent pas être maquettées (pour l’instant) mais doivent être prises en compte dans la conception de la navigation. Mis à part « À propos de Lord Reginald Stampee III » nous sommes ouverts à revoir les libellés ci-dessous.
-● Devenir membre
-● Se connecter
+
+- Devenir membre
+- Se connecter
     o Votre profil
-● À propos de Lord Reginald Stampee III
+- À propos de Lord Reginald Stampee III
     o La philatélie, c’est la vie.
     o Biographie du Lord
     o Historique familial
-● Actualités
+- Actualités
     o Timbres
     o Enchères
     o Bridge
-● Fonctionnement de la plateforme
+- Fonctionnement de la plateforme
     o Aide « Profil »
     o Aide « Comment placer une offre »
     o Aide « Suivre une enchère »
     o Aide « Trouver l’enchère désirée »
-    o Contacter le webmestre 
-● Contactez-nous
+    o Contacter le webmestre
+- Contactez-nous
     o Angleterre
     o Canada
     o US
@@ -157,7 +158,7 @@ La composition, les effets d’interactions, le rythme des éléments de l’int
 
 -------------------------------------------------------------------------------
 
-## SPRINT 0 : vous allez préparer ce qui est nécessaire pour la réalisation du projet. Charte projet :
+## SPRINT 0 : vous allez préparer ce qui est nécessaire pour la réalisation du projet. Charte projet
 
 Vous devez présenter une charte de projet, selon la date de remise définie dans le cahier des charges.
 La charte projet doit contenir les points suivants :
@@ -169,7 +170,7 @@ La charte projet doit contenir les points suivants :
 - Le « Product Backlog » avec les taches priorisées
 - Présenter les tâches du premier sprint du site web à réaliser « Sprint backlog ».
 
-## SPRINT 1:
+## SPRINT 1
 
 - Le « sprint backlog » avec le nombre d’heures réellement passé sur chaque tâche, il faut préciser pour chaque tâche si elle a été finalisée ou pas;
 - Le « sprint backlog » du prochain sprint qui doit contenir les tâches non finalisées du sprint1;
@@ -178,7 +179,7 @@ testées et validées;
 - MPD mis à jour.
 Remise : selon la date définie dans le cahier de charges.
 
-## SPRINT 2:
+## SPRINT 2
 
 - Le « sprint backlog » mis à jour avec le nombre d’heures réellement passé sur chaque tâche. Il faut préciser pour chaque tâche si elle a été finalisée ou pas;
 - Le « sprint backlog » du prochain sprint qui doit contenir les tâches non finalisées du sprint2 ;
@@ -187,7 +188,7 @@ testées et validées;
 - MPD mis à jour.
 Remise : selon la date définie dans le cahier de charges.
 
-## SPINT 3 :
+## SPINT 3
 
 - Le « sprint backlog » mis à jour avec le nombre d’heures réellement passé sur chaque tâche. Il faut préciser pour chaque tâche si elle a été finalisée ou pas;
 Conception et programmation de sites Web 582-32W-MA - Projet Web 1

@@ -1,0 +1,41 @@
+.carte {
+  background-color: var(--couleur-grise);
+  border-radius: var(--espacement-tres-petit);
+  overflow: hidden;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.carte:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.carte__image-container {
+  height: 150px;
+  overflow: hidden;
+}
+
+.carte__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carte__en-tete {
+  padding: var(--espacement-petit);
+}
+
+.carte__description {
+  padding: var(--espacement-petit);
+}
+
+.carte__pied {
+  padding: var(--espacement-petit);
+  text-align: center;
+}

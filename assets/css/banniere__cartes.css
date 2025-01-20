@@ -1,0 +1,7 @@
+.banniere__cartes {
+  display: flex;
+  gap: var(--espacement-moyen);
+  justify-content: center;
+  margin-top: var(--espacement-moyen);
+  color: var(--couleur-police-blanche);
+}

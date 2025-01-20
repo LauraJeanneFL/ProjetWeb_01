@@ -1,0 +1,180 @@
+.header__nav {
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  justify-content: space-between;
+  gap: var(--espacement-grand);
+}
+.header__nav a {
+  text-transform: uppercase;
+  font-family: var(--typo-titre);
+  font-size: var(--taille-moyenne);
+  transition-property: background-color;
+  transition-duration: 120ms;
+  color: var(--couleur-police-blanche);
+  text-decoration: none;
+  padding: var(--espacement-petit);
+}
+.header__nav li a {
+  display: block;
+}
+.header__nav a:hover {
+  background-color: var(--couleur-police-blanche);
+  color: var(--couleur-sombre-accent);
+  transition-duration: 0.5s;
+  transition-timing-function: ease-in-out;
+}
+.header__nav_deroulant {
+  position: relative;
+}
+.header__nav_deroulant > ul {
+  display: none;
+  position: absolute;
+  width: max-content;
+  top: 100%;
+  padding: var(--espacement-tres-petit);
+  background-color: var(--couleur-sombre-accent);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateY(-20px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+.header__nav_deroulant:hover ul {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+.header__nav_deroulant:not(:hover) > ul {
+  opacity: 0;
+  transform: translateY(-20px);
+  pointer-events: none;
+}
+.header__nav_liens {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--couleur-police-blanche);
+  list-style: none;
+  margin: 10px;
+  padding: 0;
+  flex-grow: 1;
+  gap: var(--espacement-petit);
+  border-top: 1px solid var(--couleur-police-blanche);
+  transition: all 0.3s ease-in-out;
+}
+.header__nav_liens li {
+  margin: var(--espacement-petit);
+}
+.header__nav_liens a {
+  text-transform: uppercase;
+  font-family: var(--typo-titre);
+  font-size: var(--taille-moyenne);
+  color: var(--couleur-police-blanche);
+  text-decoration: none;
+  padding: var(--espacement-petit);
+  display: block;
+}
+.header__nav_liens a:hover {
+  background-color: var(--couleur-claire);
+  color: var(--couleur-sombre);
+}
+.header__nav_sous-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  flex-direction: column;
+  background-color: var(--couleur-sombre-accent);
+  padding: var(--espacement-petit);
+  list-style: none;
+  border-top: 1px solid #ccc;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+.header__nav_sous-menu li {
+  margin: 0;
+}
+
+.header__nav_sous-menu a {
+  padding: var(–espacement-tres-petit);
+  font-size: var(–taille-courante);
+}
+
+@media (max-width: 880px) {
+  .header__nav {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--espacement-tres-petit);
+  }
+  .header__nav a {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header__nav {
+    display: none;
+    flex-direction: column;
+    gap: var(--espacement-petit);
+    margin: 10px;
+  }
+  .header__nav a {
+    display: inline-block;
+    padding: 15px;
+    z-index: 1;
+    text-align: center;
+    position: relative;
+  }
+  .header__nav > input[type="checkbox"] {
+    display: none;
+  }
+  .header__nav_liens {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: static;
+    flex-basis: 100%;
+    padding: auto;
+    gap: 10px;
+  }
+  input[type="checkbox"]:checked ~ .header__nav {
+    display: flex;
+  }
+  .header__nav_sous-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    flex-direction: column;
+    background-color: var(--couleur-claire);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  .header__nav_sous-menu li {
+    list-style: none;
+  }
+  .header__nav_sous-menu a {
+    display: block;
+    padding: var(--espacement-petit);
+    color: var(--couleur-police-blanche);
+    text-decoration: none;
+  }
+  .header__nav_sous-menu a:hover {
+    background-color: var(--couleur-claire);
+    color: var(--couleur-sombre);
+  }
+  .header__nav_deroulant {
+    position: relative;
+  }
+  .header__nav_deroulant:hover .header__nav_sous-menu {
+    display: block;
+  }
+  .menu-toggle:checked ~ .header__nav {
+    display: flex;
+    margin: 5px;
+  }
+}

@@ -1,0 +1,37 @@
+.banniere__carte {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 300px;
+  background: var(--couleur-claire);
+  padding: var(--espacement-petit);
+  margin: 0 var(--espacement-petit);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.banniere__carte:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  background-color: var(--couleur-sombre-accent);
+}
+
+.banniere__carte a {
+  color: var(--couleur-police-noire);
+  text-align: center;
+  text-decoration: none;
+  font-style: italic;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+
+.banniere__carte a:hover {
+  font-weight: bold;
+  transition:
+    color 0.5s ease,
+    text-decoration 0.5s ease;
+  text-decoration: underline;
+  color: var(--couleur-police-blanche);
+}

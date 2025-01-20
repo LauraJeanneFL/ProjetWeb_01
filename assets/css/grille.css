@@ -1,0 +1,10 @@
+.grille {
+  & > * + * {
+    margin-top: var(--espacement-moyen);
+  }
+
+  & > div > h1,
+  ul {
+    margin-bottom: var(--espacement-petit);
+  }
+}

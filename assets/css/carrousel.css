@@ -1,0 +1,145 @@
+.carrousel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  max-width: 450px;
+  background-color: var(--couleur-clair-accent);
+  border-radius: var(--espacement-petit);
+  position: absolute;
+  z-index: 2;
+}
+
+.carrousel__background {
+  background-image: url("../images-optimisees/idee-papier-paint/papier-paint-02.webp");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  transition: background-image 0.5s ease;
+}
+
+.carrousel__header {
+  text-align: center;
+}
+
+.carrousel__piste {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  text-align: center;
+  align-items: center;
+}
+
+.carrousel__item {
+  min-width: 100%;
+  padding: var(--espacement-petit);
+}
+
+.carrousel__image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.carrousel__description {
+  margin: var(--espacement-petit) 0;
+  font-size: var(--taille-grande);
+  font-family: var(--typo-titre);
+}
+
+.carrousel__bouton {
+  position: absolute;
+  top: 50%;
+  background-color: rgba(0, 0, 0, 0.999);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 30%;
+  font-size: 2rem;
+  z-index: 2;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+}
+
+.carrousel__bouton--precedent {
+  left: var(--espacement-grand);
+}
+
+.carrousel__bouton--suivant {
+  right: var(--espacement-grand);
+}
+
+.carrousel__bouton:hover {
+  background-color: var(--couleur-marque);
+  transform: scale(1.1);
+}
+
+.carrousel__action {
+  background-color: var(--couleur-sombre-accent);
+  color: var(--couleur-police-blanche);
+  border: none;
+  padding: var(--espacement-petit) var(--espacement-grand);
+  border-radius: var(--espacement-tout-petit);
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+}
+
+.carrousel__action:hover {
+  background-color: var(--couleur-marque);
+  transform: scale(1.05);
+}
+
+.carrousel__indicateurs {
+  bottom: var(--espacement-petit);
+  display: flex;
+  position: sticky;
+  gap: var(--espacement-petit);
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.carrousel__indicateur {
+  height: 10px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.carrousel__indicateur:hover,
+.carrousel__indicateur--actif {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.carrousel__background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .carrousel__contenu {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carrousel__contenu {
+    gap: 5px;
+  }
+}

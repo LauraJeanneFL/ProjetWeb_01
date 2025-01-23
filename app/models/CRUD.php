@@ -2,8 +2,12 @@
 namespace App\Models;
 
 abstract class CRUD extends \PDO {
+    protected $table;
+    protected $primaryKey = 'id';
+    protected $fillable = [];
+    
     final public function __construct() {
-        parent::__construct('mysql:host=localhost; dbname=e2495693; port=3306; charset=utf8', 'root', '');
+        parent::__construct('mysql:host=localhost; dbname=e2495693; port=3306; charset=utf8', 'root', 'nQpNVIW0XbAaYNTxlQKk');
     }
 
     final public function select($field = null, $order='ASC'){
@@ -57,7 +61,7 @@ abstract class CRUD extends \PDO {
         $dataKeys = array_fill_keys($this->fillable,'');
         $data = array_intersect_key($data, $dataKeys);
 
-        $fieldName = null;
+        $fieldName = '';
         foreach($data as $key=>$value){
             $fieldName .= "$key = :$key, ";
         }
@@ -80,7 +84,7 @@ abstract class CRUD extends \PDO {
         if($this->selectId($id)){
             $sql = "DELETE FROM $this->table WHERE $this->primaryKey = :$this->primaryKey";
             $stmt = $this->prepare($sql);
-            $stmt->bindValue("$this->primaryKey", $id);
+            $stmt->bindValue(":$this->primaryKey", $id);
             if($stmt->execute()){
                 return true;
             }else{
@@ -94,7 +98,7 @@ abstract class CRUD extends \PDO {
     final public function unique($field, $value){
         $sql = "SELECT * FROM $this->table WHERE $field = :$field";
         $stmt = $this->prepare($sql);
-        $stmt->bindValue("$field", $value);
+        $stmt->bindValue(":$field", $value);
         $stmt->execute();
         $count = $stmt->rowCount();
         if($count == 1){

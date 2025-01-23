@@ -37,5 +37,12 @@ class Utilisateurs {
         $stmt = $db->prepare("DELETE FROM utilisateurs WHERE id_utilisateur = :id");
         $stmt->execute(['id' => $id]);
     }
+
+    public static function findByEmail($email) {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("SELECT * FROM utilisateurs WHERE email = :email");
+        $stmt->execute(['email' => $email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
     
 }

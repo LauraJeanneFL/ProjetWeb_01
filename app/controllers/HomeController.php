@@ -5,9 +5,6 @@ use App\Models\ExampleModel;
 
 class HomeController {
     public function index() {
-        $model = new ExampleModel;
-        $data = $model->getData();
-        // Charger une vue
         require_once 'views/home/index.php';
     }
 

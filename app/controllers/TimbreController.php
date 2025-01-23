@@ -1,7 +1,7 @@
 <?php 
 
 namespace App\Controllers;
-use App\Models\Timbre;
+use App\Models\Timbre; 
 
 class TimbreController {
     // Afficher tous les timbres
@@ -17,12 +17,18 @@ class TimbreController {
 
     // Enregistrer un nouveau timbre
     public function store() {
-        if (empty($_POST['nom'])) {
-            die('Le nom du timbre est requis.');
+        if (empty($_POST['nom']) || empty($_POST['tirage']) || empty($_POST['certifier']) || empty($_POST['id_pays']) || empty($_POST['id_dimensions']) || empty($_POST['id_condition']) || empty($_POST['id_utilisateur'])) {
+            die('Tous les champs sont requis.');
         }
 
         $data = [
-            'nom' => $_POST['nom']
+            'nom' => $_POST['nom'],
+            'tirage' => $_POST['tirage'],
+            'certifier' => $_POST['certifier'],
+            'id_pays' => $_POST['id_pays'],
+            'id_dimensions' => $_POST['id_dimensions'],
+            'id_condition' => $_POST['id_condition'],
+            'id_utilisateur' => $_POST['id_utilisateur']
         ];
 
         Timbre::create($data);
@@ -37,12 +43,18 @@ class TimbreController {
 
     // Enregistrer les modifications
     public function update($id) {
-        if (empty($_POST['nom'])) {
-            die('Le nom du timbre est requis.');
+        if (empty($_POST['nom']) || empty($_POST['tirage']) || empty($_POST['certifier']) || empty($_POST['id_pays']) || empty($_POST['id_dimensions']) || empty($_POST['id_condition']) || empty($_POST['id_utilisateur'])) {
+            die('Tous les champs sont requis.');
         }
 
         $data = [
-            'nom' => $_POST['nom']
+            'nom' => $_POST['nom'],
+            'tirage' => $_POST['tirage'],
+            'certifier' => $_POST['certifier'],
+            'id_pays' => $_POST['id_pays'],
+            'id_dimensions' => $_POST['id_dimensions'],
+            'id_condition' => $_POST['id_condition'],
+            'id_utilisateur' => $_POST['id_utilisateur']
         ];
 
         Timbre::update($id, $data);

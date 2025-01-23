@@ -1,6 +1,7 @@
 <?php 
+
 namespace App\Controllers;
-use App\Models\Dimension;
+use App\Models\Dimension; 
 
 class DimensionController {
     // Afficher toutes les dimensions
@@ -16,14 +17,13 @@ class DimensionController {
 
     // Enregistrer une nouvelle dimension
     public function store() {
-        if (empty($_POST['largeur']) || empty($_POST['hauteur']) || empty($_POST['profondeur'])) {
-            die('Tous les champs sont requis.');
+        if (empty($_POST['largeur']) || empty($_POST['hauteur'])) {
+            die('Les champs largeur et hauteur sont requis.');
         }
 
         $data = [
             'largeur' => $_POST['largeur'],
-            'hauteur' => $_POST['hauteur'],
-            'profondeur' => $_POST['profondeur']
+            'hauteur' => $_POST['hauteur']
         ];
 
         Dimension::create($data);
@@ -39,13 +39,12 @@ class DimensionController {
     // Enregistrer les modifications
     public function update($id) {
         if (empty($_POST['largeur']) || empty($_POST['hauteur'])) {
-            die('Tous les champs sont requis.');
+            die('Les champs largeur et hauteur sont requis.');
         }
 
         $data = [
             'largeur' => $_POST['largeur'],
-            'hauteur' => $_POST['hauteur'],
-            
+            'hauteur' => $_POST['hauteur']
         ];
 
         Dimension::update($id, $data);

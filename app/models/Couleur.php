@@ -21,13 +21,13 @@ class Couleur {
 
     public static function create($data) {
         $db = Database::getInstance();
-        $stmt = $db->prepare("INSERT INTO couleur (nom, code_couleur) VALUES (:nom, :code_couleur)");
+        $stmt = $db->prepare("INSERT INTO couleur (nom) VALUES (:nom)");
         $stmt->execute($data);
     }
 
     public static function update($id, $data) {
         $db = Database::getInstance();
-        $stmt = $db->prepare("UPDATE couleur SET nom = :nom, code_couleur = :code_couleur WHERE id_couleur = :id");
+        $stmt = $db->prepare("UPDATE couleur SET nom = :nom WHERE id_couleur = :id");
         $data['id'] = $id;
         $stmt->execute($data);
     }

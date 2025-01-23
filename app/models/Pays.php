@@ -1,8 +1,7 @@
-<?php 
-
+<?php
 namespace App\Models;
 
-Use PDO;
+use PDO;
 use App\Providers\Database;
 
 class Pays {
@@ -19,22 +18,15 @@ class Pays {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public static function getByName($name) {
-        $db = Database::getInstance();
-        $stmt = $db->prepare("SELECT * FROM pays WHERE nom = :name");
-        $stmt->execute(['name' => $name]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
     public static function create($data) {
         $db = Database::getInstance();
-        $stmt = $db->prepare("INSERT INTO pays (nom) VALUES (:name)");
+        $stmt = $db->prepare("INSERT INTO pays (nom) VALUES (:nom)");
         $stmt->execute($data);
     }
 
     public static function update($id, $data) {
         $db = Database::getInstance();
-        $stmt = $db->prepare("UPDATE pays SET nom = :name WHERE id_pays = :id");
+        $stmt = $db->prepare("UPDATE pays SET nom = :nom WHERE id_pays = :id");
         $data['id'] = $id;
         $stmt->execute($data);
     }
@@ -44,5 +36,4 @@ class Pays {
         $stmt = $db->prepare("DELETE FROM pays WHERE id_pays = :id");
         $stmt->execute(['id' => $id]);
     }
-    
 }

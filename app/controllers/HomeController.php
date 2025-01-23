@@ -1,9 +1,18 @@
 <?php
+
 namespace App\Controllers;
+use App\Models\ExampleModel;
 
 class HomeController {
     public function index() {
-        // Charger la vue d'accueil
-        require_once '../app/views/home/index.php';
+        $model = new ExampleModel;
+        $data = $model->getData();
+        // Charger une vue
+        require_once 'views/home/index.php';
+    }
+
+    public function about() {
+        // Charger une vue
+        require_once 'views/home/about.php';
     }
 }

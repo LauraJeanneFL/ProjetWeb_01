@@ -23,12 +23,12 @@
               alt="logo-navigation"
             />
           </li>
-          <li><a href="index.html">Accueil</a></li>
+          <li><a href="index.php">Accueil</a></li>
           <li class="header__nav_deroulant">
-            <a href="fiche-produits.html">Portail d’enchère ▾</a>
+            <a href="fiche-produits.php">Portail d’enchère ▾</a>
             <ul class="header__nav_sous-menu">
-              <li><a href="fiche-produits.html">Fiche d'enchère</a></li>
-              <li><a href="catalogue.html">Catalogue</a></li>
+              <li><a href="fiche-produits.php">Fiche d'enchère</a></li>
+              <li><a href="catalogue.php">Catalogue</a></li>
             </ul>
           </li>
           <li class="header__nav_deroulant">

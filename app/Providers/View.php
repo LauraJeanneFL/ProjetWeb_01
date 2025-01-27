@@ -1,26 +1,27 @@
 <?php
 namespace App\Providers;
 
-use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 class View {
-    static public function render($template, $data=[]){
-        $loader = new FilesystemLoader('views');
+    public static function render($view, $data = []) {
+        $loader = new FilesystemLoader(__DIR__ . '/../../views');
         $twig = new Environment($loader);
-        $twig->addGlobal('asset', ASSET);
-        $twig->addGlobal('base', BASE);
-        if(isset($_SESSION['finger_print']) and $_SESSION['finger_print']===md5($_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR'])){
-            $guest = false;
-        }else{
-            $guest = true;
+
+        try {
+            return $twig->render($view . '.twig', $data);
+        } catch (\Twig\Error\LoaderError $e) {
+            throw new \Exception("Vue introuvable : " . $e->getMessage());
+        } catch (\Twig\Error\RuntimeError $e) {
+            throw new \Exception("Erreur d'exécution : " . $e->getMessage());
+        } catch (\Twig\Error\SyntaxError $e) {
+            throw new \Exception("Erreur de syntaxe Twig : " . $e->getMessage());
         }
-        $twig->addGlobal('guest', $guest);
-        $twig->addGlobal('session', $_SESSION);
-        echo $twig->render($template.".php", $data);
     }
 
-    static public function redirect($url){
-        header('location:'.BASE.'/'.$url);
+    public static function redirect($url) {
+        header('Location: ' . $url);
+        exit;
     }
 }

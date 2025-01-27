@@ -1,69 +1,74 @@
-<?php 
-
+<?php
 namespace App\Controllers;
-use App\Models\Timbre; 
 
-class TimbreController {
-    // Afficher tous les timbres
+use App\Models\Timbre;
+use App\Models\Log;
+use App\Providers\View;
+
+class TimbreController extends Controller {
     public function index() {
-        $timbres = Timbre::getAll();
-        require 'views/timbre/index.php';
+        try {
+            $timbre = new Timbre();
+            $timbres = $timbre->getAll();
+            $this->logVisit('Timbres');
+            return $this->render('timbre/index', ['timbres' => $timbres]);
+        } catch (\Exception $e) {
+            return $this->render('error', ['msg' => 'Une erreur est survenue : ' . $e->getMessage()]);
+        }
     }
 
-    // Afficher le formulaire de création
+    private function logVisit($page) {
+        $log = new Log();
+        $log->insert([
+            'id_utilisateur' => $_SESSION['user_id'] ?? null,
+            'ip' => $_SERVER['REMOTE_ADDR'],
+            'date' => date('Y-m-d H:i:s'),
+            'page' => $page
+        ]);
+    }
+
     public function create() {
-        require 'views/timbre/create.php';
+        $this->logVisit('Timbre Create');
+        return $this->render('timbre/create');
     }
 
-    // Enregistrer un nouveau timbre
-    public function store() {
-        if (empty($_POST['nom']) || empty($_POST['tirage']) || empty($_POST['certifier']) || empty($_POST['id_pays']) || empty($_POST['id_dimensions']) || empty($_POST['id_condition']) || empty($_POST['id_utilisateur'])) {
-            die('Tous les champs sont requis.');
+    public function store($data) {
+        try {
+            $timbre = new Timbre();
+            $timbre->insert($data);
+            return $this->redirect('/timbre');
+        } catch (\Exception $e) {
+            return $this->render('timbre/create', ['msg' => 'Erreur lors de la création : ' . $e->getMessage()]);
         }
-
-        $data = [
-            'nom' => $_POST['nom'],
-            'tirage' => $_POST['tirage'],
-            'certifier' => $_POST['certifier'],
-            'id_pays' => $_POST['id_pays'],
-            'id_dimensions' => $_POST['id_dimensions'],
-            'id_condition' => $_POST['id_condition'],
-            'id_utilisateur' => $_POST['id_utilisateur']
-        ];
-
-        Timbre::create($data);
-        header('Location: /timbre/index');
     }
 
-    // Afficher le formulaire de modification
     public function edit($id) {
-        $timbre = Timbre::getById($id);
-        require 'views/timbre/edit.php';
-    }
-
-    // Enregistrer les modifications
-    public function update($id) {
-        if (empty($_POST['nom']) || empty($_POST['tirage']) || empty($_POST['certifier']) || empty($_POST['id_pays']) || empty($_POST['id_dimensions']) || empty($_POST['id_condition']) || empty($_POST['id_utilisateur'])) {
-            die('Tous les champs sont requis.');
+        $this->logVisit('Timbre Edit');
+        $timbre = new Timbre();
+        $selectedTimbre = $timbre->getById($id);
+        if (!$selectedTimbre) {
+            return $this->render('error', ['msg' => 'Timbre introuvable.']);
         }
-
-        $data = [
-            'nom' => $_POST['nom'],
-            'tirage' => $_POST['tirage'],
-            'certifier' => $_POST['certifier'],
-            'id_pays' => $_POST['id_pays'],
-            'id_dimensions' => $_POST['id_dimensions'],
-            'id_condition' => $_POST['id_condition'],
-            'id_utilisateur' => $_POST['id_utilisateur']
-        ];
-
-        Timbre::update($id, $data);
-        header('Location: /timbre/index');
+        return $this->render('timbre/edit', ['timbre' => $selectedTimbre]);
     }
 
-    // Supprimer un timbre
+    public function update($id, $data) {
+        try {
+            $timbre = new Timbre();
+            $timbre->update($id, $data);
+            return $this->redirect('/timbre');
+        } catch (\Exception $e) {
+            return $this->render('timbre/edit', ['msg' => 'Erreur lors de la mise à jour : ' . $e->getMessage()]);
+        }
+    }
+
     public function delete($id) {
-        Timbre::delete($id);
-        header('Location: /timbre/index');
+        try {
+            $timbre = new Timbre();
+            $timbre->delete($id);
+            return $this->redirect('/timbre');
+        } catch (\Exception $e) {
+            return $this->render('error', ['msg' => 'Erreur lors de la suppression : ' . $e->getMessage()]);
+        }
     }
 }

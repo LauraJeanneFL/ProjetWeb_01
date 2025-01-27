@@ -1,60 +1,75 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Models\Enchere;
+use App\Models\Log;
+use App\Providers\View;
 
-class EnchereController {
-    // Afficher toutes les enchères
+class EnchereController extends Controller {
     public function index() {
-        $encheres = Enchere::getAll();
-        require 'views/enchere/index.php';
-    }
-
-    // Afficher le formulaire de création
-    public function create() {
-        require 'views/enchere/create.php';
-    }
-
-    // Enregistrer une nouvelle enchère
-    public function store() {
-        if (empty($_POST['nom']) || empty($_POST['prix_debut']) || empty($_POST['date_debut']) || empty($_POST['date_fin']) || empty($_POST['id_timbre'])) {
-            die('Tous les champs sont requis.');
+        try {
+            $enchere = new Enchere();
+            $encheres = $enchere->getAll();
+            $this->logVisit('Encheres');
+            return $this->render('enchere/index', ['encheres' => $encheres]);
+        } catch (\Exception $e) {
+            return $this->render('error', ['msg' => 'Une erreur est survenue : ' . $e->getMessage()]);
         }
-
-        $data = [
-            'nom' => $_POST['nom'],
-            'prix_debut' => $_POST['prix_debut'],
-            'date_debut' => $_POST['date_debut'],
-            'date_fin' => $_POST['date_fin'],
-            'id_timbre' => $_POST['id_timbre']
-        ];
-        
-        Enchere::create($data);
-        header('Location: /enchere/index');
     }
 
-    // Afficher le formulaire de modification
+    private function logVisit($page) {
+        $log = new Log();
+        $log->insert([
+            'id_utilisateur' => $_SESSION['user_id'] ?? null,
+            'ip' => $_SERVER['REMOTE_ADDR'],
+            'date' => date('Y-m-d H:i:s'),
+            'page' => $page
+        ]);
+    }
+
+    public function create() {
+        $this->logVisit('Enchere Create');
+        return $this->render('enchere/create');
+    }
+
+    public function store($data) {
+        try {
+            $enchere = new Enchere();
+            $enchere->insert($data);
+            return $this->redirect('/enchere');
+        } catch (\Exception $e) {
+            return $this->render('enchere/create', ['msg' => 'Erreur lors de la création : ' . $e->getMessage()]);
+        }
+    }
+
     public function edit($id) {
-        $enchere = Enchere::getById($id);
-        require 'views/enchere/edit.php';
+        $this->logVisit('Enchere Edit');
+        $enchere = new Enchere();
+        $selectedEnchere = $enchere->getById($id);
+        if (!$selectedEnchere) {
+            return $this->render('error', ['msg' => 'Enchère introuvable.']);
+        }
+        return $this->render('enchere/edit', ['enchere' => $selectedEnchere]);
     }
 
-    // Enregistrer les modifications
-    public function update($id) {
-        $data = [
-            'nom' => $_POST['nom'],
-            'prix_debut' => $_POST['prix_debut'],
-            'date_debut' => $_POST['date_debut'],
-            'date_fin' => $_POST['date_fin'],
-            'id_timbre' => $_POST['id_timbre']
-        ];
-        Enchere::update($id, $data);
-        header('Location: /enchere/index');
+    public function update($id, $data) {
+        try {
+            $enchere = new Enchere();
+            $enchere->update($id, $data);
+            return $this->redirect('/enchere');
+        } catch (\Exception $e) {
+            return $this->render('enchere/edit', ['msg' => 'Erreur lors de la mise à jour : ' . $e->getMessage()]);
+        }
     }
 
-    // Supprimer une enchère
     public function delete($id) {
-        Enchere::delete($id);
-        header('Location: /enchere/index');
+        try {
+            $enchere = new Enchere();
+            $enchere->delete($id);
+            return $this->redirect('/enchere');
+        } catch (\Exception $e) {
+            return $this->render('error', ['msg' => 'Erreur lors de la suppression : ' . $e->getMessage()]);
+        }
     }
 }

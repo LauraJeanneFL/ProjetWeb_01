@@ -1,59 +1,74 @@
-<?php 
+<?php
 
 namespace App\Controllers;
-use App\Models\Dimension; 
 
-class DimensionController {
-    // Afficher toutes les dimensions
+use App\Models\Dimension;
+use App\Providers\View;
+
+class DimensionController extends Controller {
     public function index() {
-        $dimensions = Dimension::getAll();
-        require 'views/dimension/index.php';
+        try {
+            $dimension = new Dimension();
+            $allDimensions = $dimension->getAll();
+            $this->logVisit('Dimension Index');
+            return $this->render('dimension/index', ['dimensions' => $allDimensions]);
+        } catch (\Exception $e) {
+            return $this->render('error', ['msg' => 'Une erreur est survenue : ' . $e->getMessage()]);
+        }
     }
 
-    // Afficher le formulaire de création
     public function create() {
-        require 'views/dimension/create.php';
+        $this->logVisit('Dimension Create');
+        return $this->render('dimension/create');
     }
 
-    // Enregistrer une nouvelle dimension
-    public function store() {
-        if (empty($_POST['largeur']) || empty($_POST['hauteur'])) {
-            die('Les champs largeur et hauteur sont requis.');
+    public function store($data) {
+        try {
+            $dimension = new Dimension();
+            $dimension->insert($data);
+            return $this->redirect('/dimension');
+        } catch (\Exception $e) {
+            return $this->render('dimension/create', ['msg' => 'Erreur lors de la création : ' . $e->getMessage()]);
         }
-
-        $data = [
-            'largeur' => $_POST['largeur'],
-            'hauteur' => $_POST['hauteur']
-        ];
-
-        Dimension::create($data);
-        header('Location: /dimension/index');
     }
 
-    // Afficher le formulaire de modification
     public function edit($id) {
-        $dimension = Dimension::getById($id);
-        require 'views/dimension/edit.php';
-    }
-
-    // Enregistrer les modifications
-    public function update($id) {
-        if (empty($_POST['largeur']) || empty($_POST['hauteur'])) {
-            die('Les champs largeur et hauteur sont requis.');
+        $this->logVisit('Dimension Edit');
+        $dimension = new Dimension();
+        $selectedDimension = $dimension->getById($id);
+        if (!$selectedDimension) {
+            return $this->render('error', ['msg' => 'Dimension introuvable.']);
         }
-
-        $data = [
-            'largeur' => $_POST['largeur'],
-            'hauteur' => $_POST['hauteur']
-        ];
-
-        Dimension::update($id, $data);
-        header('Location: /dimension/index');
+        return $this->render('dimension/edit', ['dimension' => $selectedDimension]);
     }
 
-    // Supprimer une dimension
+    public function update($id, $data) {
+        try {
+            $dimension = new Dimension();
+            $dimension->update($id, $data);
+            return $this->redirect('/dimension');
+        } catch (\Exception $e) {
+            return $this->render('dimension/edit', ['msg' => 'Erreur lors de la mise à jour : ' . $e->getMessage()]);
+        }
+    }
+
     public function delete($id) {
-        Dimension::delete($id);
-        header('Location: /dimension/index');
+        try {
+            $dimension = new Dimension();
+            $dimension->delete($id);
+            return $this->redirect('/dimension');
+        } catch (\Exception $e) {
+            return $this->render('error', ['msg' => 'Erreur lors de la suppression : ' . $e->getMessage()]);
+        }
+    }
+
+    private function logVisit($page) {
+        $log = new \App\Models\Log();
+        $log->insert([
+            'id_utilisateur' => $_SESSION['user_id'] ?? null,
+            'ip' => $_SERVER['REMOTE_ADDR'],
+            'date' => date('Y-m-d H:i:s'),
+            'page' => $page
+        ]);
     }
 }

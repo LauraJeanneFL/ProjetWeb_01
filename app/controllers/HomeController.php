@@ -1,15 +1,18 @@
 <?php
 
 namespace App\Controllers;
-use App\Models\ExampleModel;
+
+use App\Models\Utilisateur;
+use App\Providers\View;
 
 class HomeController {
     public function index() {
-        require_once 'views/home/index.php';
-    }
+        $user = new Utilisateur();
+        $user->redirectIfNoAccess('admin'); 
 
-    public function about() {
-        // Charger une vue
-        require_once 'views/home/about.php';
+        return View::render('home/index', [
+            'title' => 'Page d\'Accueil',
+            'message' => 'Bienvenue sur mon site web !'
+        ]);
     }
 }

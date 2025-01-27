@@ -1,104 +1,72 @@
 <?php
-
 namespace App\Controllers;
-
+use App\Models\User;
+use App\Models\Privilege;
 use App\Models\Utilisateur;
+use App\Providers\View;
+use App\Providers\Validator;
+use App\Providers\Auth;
 
-class UtilisateurController {
+class UserController {
+
+    public function __construct(){
+        Auth::session();
+        Auth::privilege(1);
+    }
+
     public function index() {
-        if (!class_exists('App\Models\Utilisateur')) {
-            die('La classe Utilisateur est introuvable.');
+        // Vérifie l'accès
+        $user = new Utilisateur();
+        $user->redirectIfNoAccess('admin');
+
+        $users = $user->getAll();
+
+        return View::render('user/index', ['users' => $users]); 
+    }
+
+    public function create(){
+        $privilege = new Privilege;
+        $privileges = $privilege->select();
+        return View::render('user/create', ['privileges' => $privileges]);
+    }
+
+    public function store($data){
+        $validator = new Validator;
+        $validator->field('name', $data['name'])->min(2)->max(50);
+        $validator->field('username', $data['username'])->min(2)->max(50)->unique('User');
+        $validator->field('password', $data['password'])->min(6)->max(20);
+        $validator->field('privilege_id', $data['privilege_id'], "Privilege")->required()->number();
+
+        if($validator->isSuccess()){
+            $user = new Utilisateur();
+            $data['email'] = $data['username'];
+            $data['password'] = $user->hashPassword($data['password']);
+            // print_r($data);
+            // die();
+            $insert  = $user->insert($data);
+            if($insert){
+                return View::redirect('login');
+            }else{
+                return View::render('error');
+            }
+        }else{
+            $errors = $validator->getErrors();
+            $privilege = new Privilege;
+            $privileges = $privilege->select();
+            return View::render('user/create', ['errors'=>$errors, 'inputs'=>$data, 'privileges' => $privileges]);
         }
-        $utilisateurs = Utilisateur::getAll();
-        require 'views/utilisateur/index.php';
     }
 
-    public function login() {
-        require 'views/utilisateur/login.php';
-    }
+    public function login($data) {
+        $user = new Utilisateur();
 
-    public function authenticate() {
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-
-        $utilisateur = Utilisateur::findByEmail($email);
-        if ($utilisateur && password_verify($password, $utilisateur['mot_de_passe'])) {
-            $_SESSION['utilisateur'] = $utilisateur;
-            header('Location: /utilisateur/profile');
-        } else {
-            echo "Identifiants invalides.";
+         var_dump($data); // Vérifiez ce qui est envoyé
+        if ($user->checkuser($data['username'], $data['password'])) {
+            $_SESSION['finger_print'] = md5($_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR']);
+            return View::redirect('dashboard'); 
         }
+        return View::render('login', ['error' => 'Identifiants incorrects.']);
     }
 
-    public function logout() {
-        session_destroy();
-        header('Location: /');
-    }
 
-    public function sendResetLink() {
-        $email = $_POST['email'];
-        echo "Lien de réinitialisation envoyé à $email.";
-    }
-
-    public function resetPassword() {
-        $token = $_POST['token'];
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        echo "Mot de passe mis à jour.";
-    }
-
-    public function profile() {
-        if (!isset($_SESSION['utilisateur'])) {
-            header('Location: /utilisateur/login');
-            exit();
-        }
-
-        $utilisateur = $_SESSION['utilisateur'];
-        $historique = []; // Charger l'historique des enchères ici
-        require 'views/utilisateur/profile.php';
-    }
-
-    public function create() {
-        require 'views/utilisateur/create.php';
-    }
-
-    public function store() {
-        if (empty($_POST['nom']) || empty($_POST['prenom']) || empty($_POST['email']) || empty($_POST['password'])) {
-            die('Tous les champs sont requis.');
-        }
-
-        $data = [
-            'nom' => $_POST['nom'],
-            'prenom' => $_POST['prenom'],
-            'email' => $_POST['email'],
-            'mot_de_passe' => password_hash($_POST['password'], PASSWORD_DEFAULT)
-        ];
-
-        Utilisateur::create($data);
-        header('Location: /utilisateur/index');
-    }
-
-    public function edit($id) {
-        $utilisateur = Utilisateur::getById($id);
-        require 'views/utilisateur/edit.php';
-    }
-
-    public function update($id) {
-        if (empty($_POST['nom']) || empty($_POST['prenom']) || empty($_POST['email'])) {
-            die('Tous les champs sont requis.');
-        }
-
-        $data = [
-            'nom' => $_POST['nom'],
-            'prenom' => $_POST['prenom'],
-            'email' => $_POST['email']
-        ];
-
-        Utilisateur::update($id, $data);
-        header('Location: /utilisateur/index');
-    }
-
-    public function delete($id) {
-        Utilisateur::delete($id);
-        header('Location: /utilisateur/index');
-    }
 }

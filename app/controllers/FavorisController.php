@@ -1,62 +1,49 @@
-<?php 
+<?php
 
 namespace App\Controllers;
-use App\Models\Favoris; 
 
-class FavorisController {
-    // Afficher tous les favoris
+use App\Models\Favoris;
+use App\Providers\View;
+
+class FavorisController extends Controller {
     public function index() {
-        $favoris = Favoris::getAll();
-        require 'views/favoris/index.php';
-    }
-
-    // Afficher le formulaire de création
-    public function create() {
-        require 'views/favoris/create.php';
-    }
-
-    // Enregistrer un nouveau favori
-    public function store() {
-        if (empty($_POST['id_utilisateur']) || empty($_POST['id_timbre']) || empty($_POST['id_enchere'])) {
-            die('Tous les champs sont requis.');
+        try {
+            $favoris = new Favoris();
+            $allFavoris = $favoris->getAll();
+            $this->logVisit('Favoris Index');
+            return $this->render('favoris/index', ['favoris' => $allFavoris]);
+        } catch (\Exception $e) {
+            return $this->render('error', ['msg' => 'Une erreur est survenue : ' . $e->getMessage()]);
         }
-
-        $data = [
-            'id_utilisateur' => $_POST['id_utilisateur'],
-            'id_timbre' => $_POST['id_timbre'],
-            'id_enchere' => $_POST['id_enchere'],
-            'date_favori' => date('Y-m-d H:i:s')
-        ];
-
-        Favoris::create($data);
-        header('Location: /favoris/index');
     }
 
-    // Afficher le formulaire de modification
-    public function edit($id) {
-        $favori = Favoris::getById($id);
-        require 'views/favoris/edit.php';
-    }
-
-    // Enregistrer les modifications
-    public function update($id) {
-        if (empty($_POST['id_utilisateur']) || empty($_POST['id_timbre']) || empty($_POST['id_enchere'])) {
-            die('Tous les champs sont requis.');
+    public function add($data) {
+        try {
+            $favoris = new Favoris();
+            $favoris->insert($data);
+            return $this->redirect('/favoris');
+        } catch (\Exception $e) {
+            return $this->render('favoris/add', ['msg' => 'Erreur lors de l\'ajout : ' . $e->getMessage()]);
         }
-
-        $data = [
-            'id_utilisateur' => $_POST['id_utilisateur'],
-            'id_timbre' => $_POST['id_timbre'],
-            'id_enchere' => $_POST['id_enchere']
-        ];
-
-        Favoris::update($id, $data);
-        header('Location: /favoris/index');
     }
 
-    // Supprimer un favori
     public function delete($id) {
-        Favoris::delete($id);
-        header('Location: /favoris/index');
+        try {
+            $favoris = new Favoris();
+            $favoris->delete($id);
+            return $this->redirect('/favoris');
+        } catch (\Exception $e) {
+            return $this->render('error', ['msg' => 'Erreur lors de la suppression : ' . $e->getMessage()]);
+        }
+    }
+
+    private function logVisit($page) {
+        $log = new \App\Models\Log();
+        $log->insert([
+            'id_utilisateur' => $_SESSION['user_id'] ?? null,
+            'ip' => $_SERVER['REMOTE_ADDR'],
+            'date' => date('Y-m-d H:i:s'),
+            'page' => $page
+        ]);
     }
 }

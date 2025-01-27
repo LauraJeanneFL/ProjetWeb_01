@@ -1,48 +1,108 @@
 <?php
-
 namespace App\Models;
 
-use PDO;
-use App\Providers\Database;
+use App\Models\CRUD;
+use App\Providers\View;
 
-class Utilisateurs {
-    public static function getAll() {
-        $db = Database::getInstance();
-        $stmt = $db->query("SELECT * FROM utilisateurs");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+class Utilisateur extends CRUD{
+    protected $table = "user";
+    protected $primaryKey = "id";
+    protected $fillable = [
+        'id_utilisateur', 
+        'prenom', 'nom', 
+        'email', 
+        'mot_de_passe', 
+        'reset_token', 
+        'date_inscription', 
+        'reset_token_expiration'];
+
+    public function hashPassword ($password, $cost = 10){
+        $options = [
+            "cost"=> $cost
+        ];
+        return password_hash($password, PASSWORD_BCRYPT, $options);
     }
 
-    public static function getById($id) {
-        $db = Database::getInstance();
-        $stmt = $db->prepare("SELECT * FROM utilisateurs WHERE id_utilisateur = :id");
-        $stmt->execute(['id' => $id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+    public function checkuser($username, $password) {
+        $user = $this->unique('nom_utilisateur', $username); 
+        if ($user) {
+            // Compare le mot de passe brut avec le mot de passe haché
+            if (password_verify($password, $user['mot_de_passe'])) {
+                // Initialisez les variables de session après une connexion réussie
+                session_regenerate_id();
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['user_name'] = $user['nom_utilisateur'];
+                $_SESSION['role'] = $user['role'];
+                return true;
+            } else {
+                error_log("Mot de passe incorrect pour l'utilisateur $username");
+            }
+        } else {
+            error_log("Utilisateur $username non trouvé");
+        }
+        return false;
     }
 
-    public static function create($data) {
-        $db = Database::getInstance();
-        $stmt = $db->prepare("INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe) VALUES (:nom, :prenom, :email, :mot_de_passe)");
-        $stmt->execute($data);
+    public function redirectIfNoAccess($requiredRole) {
+        if (!$this->hasAccess($requiredRole)) {
+            error_log("Accès refusé pour le rôle requis : $requiredRole");
+            error_log("Rôle actuel de l'utilisateur : " . ($_SESSION['role'] ?? 'non défini'));
+            View::render('error', ['msg' => "Accès refusé. Vous n'avez pas les privilèges requis."]);
+            exit;
+        }
     }
 
-    public static function update($id, $data) {
-        $db = Database::getInstance();
-        $stmt = $db->prepare("UPDATE utilisateurs SET nom = :nom, prenom = :prenom, email = :email, mot_de_passe = :mot_de_passe WHERE id_utilisateur = :id");
-        $data['id'] = $id;
-        $stmt->execute($data);
+    // Modifier le rôle d'un utilisateur
+    public function setRole($userId, $newRole) {
+        $data = ['role' => $newRole];
+        return $this->update($data, $userId);
     }
 
-    public static function delete($id) {
-        $db = Database::getInstance();
-        $stmt = $db->prepare("DELETE FROM utilisateurs WHERE id_utilisateur = :id");
-        $stmt->execute(['id' => $id]);
+    // Différencier les privilèges des rôles (client et administrateur)
+    public function hasAccess($requiredRole) {
+        if (!$this->validateSession()) {
+            return false;
+        }
+
+        // Vérifie si le rôle de l'utilisateur correspond au rôle requis
+        return $_SESSION['role'] === $requiredRole;
     }
 
-    public static function findByEmail($email) {
-        $db = Database::getInstance();
-        $stmt = $db->prepare("SELECT * FROM utilisateurs WHERE email = :email");
-        $stmt->execute(['email' => $email]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+    // Vérifier l’intégrité de la session
+    public function validateSession() {
+        if (!isset($_SESSION['user_id'], $_SESSION['finger_print'])) {
+            return false;
+        }
+
+        // Vérifie si la session correspond à l'utilisateur
+        $fingerPrint = md5($_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR']);
+        if ($_SESSION['finger_print'] !== $fingerPrint) {
+            return $_SESSION['finger_print'] === $fingerPrint;
+        }
+    }   
+
+    // Sécuriser la déconnexion
+    public function logout() {
+        session_unset();
+        session_destroy();
+        setcookie(session_name(), '', time() - 3600, '/');
+        header("Location: /ProgWebAvancee/Evaluations/TP3/login");
+        exit;
     }
-    
+    public function findByEmail($email) {
+        $query = "SELECT * FROM utilisateur WHERE email = :email";
+        $params = [':email' => $email];
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute($params);
+        return $stmt->fetch();
+    }
+
+    public function updatePasswordByEmail($email, $newPassword) {
+        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+        return $this->updateWhere(['mot_de_passe' => $hashedPassword], ['email' => $email]);
+    }
+
+    public function getAll() {
+        return $this->select(); 
+    }
 }

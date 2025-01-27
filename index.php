@@ -1,9 +1,9 @@
 <?php
 session_start();
 require_once 'config.php';
-require_once 'vendor/autoload.php';
-require_once 'App/Routes/Routes.php'; 
-echo "Chargement du fichier index.php<br>";
+require_once __DIR__ . '/vendor/autoload.php';
+require_once 'app/Routes/Routes.php'; 
+//echo "Chargement du fichier index.php<br>";
 require_once 'App/Routes/web.php'; 
 
 //Récupération de l’URL :
@@ -41,10 +41,7 @@ try {
 } catch (Exception $e) {
     // Gestion d'autres erreurs éventuelles
     header("HTTP/1.0 500 Internal Server Error");
-    require_once 'Views/error/404.twig';
+    require_once 'views/error/404.php';
     exit();
 }
-
-
-
 ?>

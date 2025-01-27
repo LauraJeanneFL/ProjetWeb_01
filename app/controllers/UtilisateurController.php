@@ -7,7 +7,7 @@ use App\Providers\View;
 use App\Providers\Validator;
 use App\Providers\Auth;
 
-class UserController {
+class UtilisateurController {
 
     public function __construct(){
         Auth::session();
@@ -21,7 +21,7 @@ class UserController {
 
         $users = $user->getAll();
 
-        return View::render('user/index', ['users' => $users]); 
+        return View::render('utilisateur/login', ['users' => $users]); 
     }
 
     public function create(){
@@ -59,13 +59,12 @@ class UserController {
 
     public function login($data) {
         $user = new Utilisateur();
-
-         var_dump($data); // Vérifiez ce qui est envoyé
+        //var_dump($data); // Vérifier ce qui est envoyé
         if ($user->checkuser($data['username'], $data['password'])) {
             $_SESSION['finger_print'] = md5($_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR']);
             return View::redirect('dashboard'); 
         }
-        return View::render('login', ['error' => 'Identifiants incorrects.']);
+        return View::render('login', ['error' => 'Identifiants incorrects ou utilisateur inexistant.']);
     }
 
 

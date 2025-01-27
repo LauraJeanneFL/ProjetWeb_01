@@ -1,6 +1,5 @@
 <?php
 namespace App\Routes;
-echo "Chargement du fichier Routes.php<br>";
 
 class Route{
     private static $routes = [];
@@ -14,50 +13,33 @@ class Route{
     }
 
     public static function dispatch(){
-        $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $basePath = '/ProjetWeb/VsCode';
-        echo "BasePath attendu : $basePath<br>";
-        echo "URL reçue : $url<br>";
-
-        if (strpos($url, $basePath) === 0) {
-            $url = substr($url, strlen($basePath));
-            echo "URL après suppression du basePath : $url<br>";
-        }
-
+        $url = $_SERVER['REQUEST_URI'];
         $urlSegments = explode('?', $url);
         $urlPath = rtrim($urlSegments[0], '/');
-        echo "URL finale analysée : $urlPath<br>";
         $method = $_SERVER['REQUEST_METHOD'];
        
-        foreach(self::$routes as $route){
-            if(BASE.$route['url'] ==  $urlPath && $route['method'] == $method ){
-                    echo "Comparaison avec la route : {$route['url']}<br>";
-                    $pattern = "/^" . preg_replace('/\\\{[a-zA-Z0-9_]+\\\}/', '([a-zA-Z0-9_]+)', preg_quote($route['url'], '/')) . "$/";
-                    if (preg_match($pattern, $urlPath, $matches)) {
-                        echo "Route correspondante trouvée : {$route['url']}<br>";
-                        return;
-                    }
-                //echo BASE.$route['url'].' = '.$urlPath;
+        foreach (self::$routes as $route) {
+            if (BASE.$route['url'] == $urlPath && $route['method'] == $method) {
+                echo BASE.$route['url'].' = '.$urlPath;
                 //echo $route['controller'];
-                $controllerSegments = explode('@',$route['controller']);
-                //print_r($controllerSegments);
-                //die();
-                $controllerName = "App\\Controllers\\".$controllerSegments[0];
+
+                $controllerSegments = explode('@', $route['controller']);
+                print_r($controllerSegments);
+                
+                $controllerName = "App\\Controllers\\" . $controllerSegments[0];
                 $methodName = $controllerSegments[1];
                 $constrollerInstance = new $controllerName();
 
-                if($method=='GET'){
-                    if(isset($urlSegments[1])){
-                        //echo $urlSegments[1];
-                        //echo "<br>";
+                if($method == 'GET') {
+                    if (isset($urlSegments[1])) {
+                        echo $urlSegments[1];
+                        echo "<br>";
                         parse_str($urlSegments[1], $queryParams);
-                        //print_r($queryParams);
                         $constrollerInstance->$methodName($queryParams);
-                    }else {
+                    } else {
                         $constrollerInstance->$methodName();
                     }
-                    
-                }elseif($method=='POST'){
+                } elseif ($method == 'POST') {
                     if(isset($urlSegments[1])){
                         parse_str($urlSegments[1], $queryParams);
                         $constrollerInstance->$methodName($_POST, $queryParams);
@@ -66,10 +48,12 @@ class Route{
                     }
                 }
                 return;
-            } 
+            }
         }
+
         http_response_code(404);
-        //echo "404 Not found";
-    } 
+        header("HTTP/1.0 500 Internal Server Error");
+        require_once 'views/error/404.php';
+        exit();
+    }
 }
-?>

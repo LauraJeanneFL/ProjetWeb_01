@@ -9,8 +9,7 @@ use App\Controllers\FavorisController;
 use App\Controllers\PasswordController;
 
 // Routes définies
-
-Route::get('/', function() {
+/* Route::get('/', function() {
     echo "Bienvenue à la page d'accueil.";
 });
 Route::get('/debug', function() {
@@ -19,7 +18,7 @@ Route::get('/debug', function() {
 
 Route::get('/test', function() {
     echo "Route de test fonctionnelle.";
-});
+}); */
 
 Route::get('/home', 'HomeController@index');
 Route::get('/', 'HomeController@index');
@@ -38,7 +37,7 @@ Route::get('/timbre/edit/{id}', 'TimbreController@edit');
 Route::post('/timbre/update/{id}', 'TimbreController@update');
 Route::get('/timbre/delete/{id}', 'TimbreController@delete');
 
-Route::get('/utilisateur/index', 'UtilisateurController@index');
+Route::get('/utilisateur/login', 'UtilisateurController@index');
 Route::get('/utilisateur/create', 'UtilisateurController@create');
 Route::post('/utilisateur/store', 'UtilisateurController@store');
 Route::get('/utilisateur/edit/{id}', 'UtilisateurController@edit');
@@ -52,10 +51,7 @@ Route::get('/favoris/delete/{id}', 'FavorisController@delete');
 
 Route::get('/password/request', 'PasswordController@requestForm');
 Route::post('/password/request', 'PasswordController@handleRequest');
-Route::get('/utilisateur/reset', 'PasswordController@requestForm');
-Route::post('/utilisateur/reset', 'PasswordController@handleRequest');
-Route::get('/utilisateur/update_password', 'PasswordController@showUpdateForm');
-Route::post('/utilisateur/update_password', 'PasswordController@updatePassword');
+Route::get('/password/update/{token}', 'PasswordController@showUpdateForm');
+Route::post('/password/update', 'PasswordController@updatePassword');
 
-echo "Chargement du fichier web.php<br>";
 Route::dispatch();

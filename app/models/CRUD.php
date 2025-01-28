@@ -2,30 +2,23 @@
 namespace App\Models;
 
 use PDO;
+use App\Providers\Database;
 
-abstract class CRUD extends \PDO {
+abstract class CRUD extends PDO {
     protected $pdo;
     protected $table;
     protected $primaryKey = 'id';
     protected $fillable = [];
 
    final public function __construct() {
-        $dsn = getenv('DB_DSN') ?: 'mysql:host=localhost;dbname=e2495693;port=3306;charset=utf8';
-        $user = getenv('DB_USER') ?: 'root';
-        $password = getenv('DB_PASS') ?: 'nQpNVIW0XbAaYNTxlQKk';
-
-        parent::__construct($dsn, $user, $password);
-
-        if (empty($this->table)) {
-            throw new \Exception("La table n'est pas définie dans le modèle.");
-        }
+        parent::__construct('mysql:host=localhost; dbname=e2495693; port=3306; charset=utf8', 'root', '');
     }
 
     final public function select($field = null, $order='ASC'){
         if($field == null){
             $field = $this->primaryKey;
         }
-        $sql= "SELECT * FROM $this->table ORDER BY $field $order";
+        $sql= "SELECT * FROM {$this->table} ORDER BY {$field} {$order}";
         if($stmt = $this->query($sql)){
             return $stmt->fetchAll();
         }else{

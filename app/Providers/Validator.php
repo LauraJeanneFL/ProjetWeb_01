@@ -47,6 +47,13 @@ class Validator {
         return $this;
     }
 
+    public function email() {
+    if (!filter_var($this->value, FILTER_VALIDATE_EMAIL)) {
+        $this->errors[$this->key] = "$this->name doit être une adresse e-mail valide.";
+    }
+    return $this;
+}
+
     public function unique($model){
         $model = 'App\\Models\\'.$model;
         $model = new $model;

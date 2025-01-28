@@ -17,12 +17,12 @@
                 <li class="header__medaillon">
                     <img src="{{ asset('images-optimisees/Logos/logo-2-alt.webp') }}" alt="logo-navigation">
                 </li>
-                <li><a href="{{ path('home') }}">Accueil</a></li>
+                <li><a href="#">Accueil</a></li>
                 <li class="header__nav_deroulant">
                     <a href="#">Portail d’enchère ▾</a>
                     <ul class="header__nav_sous-menu">
-                        <li><a href="{{ path('fiche_produit') }}">Fiche d'enchère</a></li>
-                        <li><a href="{{ path('catalogue') }}">Catalogue</a></li>
+                        <li><a href="#">Fiche d'enchère</a></li>
+                        <li><a href="#">Enchères</a></li>
                     </ul>
                 </li>
                 <li class="header__nav_deroulant">

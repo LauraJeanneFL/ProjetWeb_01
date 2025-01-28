@@ -1,4 +1,6 @@
-
+{% extends "layout/base.twig" %}
+{% block title %}Connexion{% endblock %}
+{% block content %}
 <h1>Connexion</h1>
 <form action="/utilisateur/login" method="POST">
     <label for="username">Nom d’utilisateur :</label>
@@ -11,3 +13,5 @@
 </form>
 {% if error %}
     <p class="error">{{ error }}</p>
+{% endif %}
+{% endblock %}

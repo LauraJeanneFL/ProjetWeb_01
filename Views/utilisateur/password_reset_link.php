@@ -1,4 +1,4 @@
-
-<h1>Email Sent</h1>
-<p>A password reset link has been sent to your email. 
-    Please check your inbox.</p>
+{% extends "layout/base.twig" %}
+<link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
+<h1>Email envoyé</h1>
+<p>Un lien de réinitialisation de mot de passe a été envoyé à votre adresse e-mail. Veuillez vérifier votre boîte de réception.</p>

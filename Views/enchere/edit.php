@@ -1,6 +1,10 @@
+{% extends 'layout/base' %}
 
+{% block title %}Modifier une enchère{% endblock %}
+
+{% block content %}
 <h1>Modifier une enchère</h1>
-<form action="/enchere/update/{{ enchere.id_enchere }}" method="POST">
+<form action="{{ path('enchere_update', { id: enchere.id_enchere }) }}" method="POST">
     <label for="nom">Nom de l'enchère</label>
     <input type="text" id="nom" name="nom" value="{{ enchere.nom }}" required>
 
@@ -15,3 +19,4 @@
 
     <button type="submit">Mettre à jour</button>
 </form>
+{% endblock %}

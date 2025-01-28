@@ -1,6 +1,10 @@
+{% extends 'layout/base' %}
 
+{% block title %}Créer une nouvelle enchère{% endblock %}
+
+{% block content %}
 <h1>Créer une nouvelle enchère</h1>
-<form action="/enchere/store" method="POST">
+<form action="{{ path('enchere_store') }}" method="POST">
     <label for="nom">Nom de l'enchère</label>
     <input type="text" id="nom" name="nom" required>
 
@@ -15,3 +19,4 @@
 
     <button type="submit">Créer</button>
 </form>
+{% endblock %}

@@ -8,50 +8,25 @@ use App\Controllers\UtilisateurController;
 use App\Controllers\FavorisController;
 use App\Controllers\PasswordController;
 
-// Routes définies
-/* Route::get('/', function() {
-    echo "Bienvenue à la page d'accueil.";
-});
-Route::get('/debug', function() {
-    echo "Route de débogage fonctionnelle.";
-});
-
-Route::get('/test', function() {
-    echo "Route de test fonctionnelle.";
-}); */
-
 Route::get('/home', 'HomeController@index');
-Route::get('/', 'HomeController@index');
+Route::get('/catalogue', 'CatalogueController@index'); 
+Route::get('/fiche-produit/{id}', 'FicheProduitController@show');
 
-Route::get('/enchere/index', 'EnchereController@index');
+// Gestion des utilisateurs
+Route::get('/utilisateur/login', 'UtilisateurController@login');
+Route::post('/utilisateur/login', 'UtilisateurController@handleLogin');
+Route::get('/utilisateur/register', 'UtilisateurController@register');
+Route::post('/utilisateur/register', 'UtilisateurController@handleRegister');
+Route::get('/utilisateur/password-reset', 'UtilisateurController@passwordReset');
+Route::post('/utilisateur/password-reset', 'UtilisateurController@handlePasswordReset');
+
+//Gestions des enchères
+Route::get('/enchere', 'EnchereController@index');
 Route::get('/enchere/create', 'EnchereController@create');
-Route::post('/enchere/store', 'EnchereController@store');
+Route::post('/enchere/create', 'EnchereController@store');
 Route::get('/enchere/edit/{id}', 'EnchereController@edit');
-Route::post('/enchere/update/{id}', 'EnchereController@update');
+Route::post('/enchere/edit/{id}', 'EnchereController@update');
 Route::get('/enchere/delete/{id}', 'EnchereController@delete');
-
-Route::get('/timbre/index', 'TimbreController@index');
-Route::get('/timbre/create', 'TimbreController@create');
-Route::post('/timbre/store', 'TimbreController@store');
-Route::get('/timbre/edit/{id}', 'TimbreController@edit');
-Route::post('/timbre/update/{id}', 'TimbreController@update');
-Route::get('/timbre/delete/{id}', 'TimbreController@delete');
-
-Route::get('/utilisateur/login', 'UtilisateurController@index');
-Route::get('/utilisateur/create', 'UtilisateurController@create');
-Route::post('/utilisateur/store', 'UtilisateurController@store');
-Route::get('/utilisateur/edit/{id}', 'UtilisateurController@edit');
-Route::post('/utilisateur/update/{id}', 'UtilisateurController@update');
-Route::get('/utilisateur/delete/{id}', 'UtilisateurController@delete');
-
-Route::get('/favoris/index', 'FavorisController@index');
-Route::get('/favoris/create', 'FavorisController@create');
-Route::post('/favoris/store', 'FavorisController@store');
-Route::get('/favoris/delete/{id}', 'FavorisController@delete');
-
-Route::get('/password/request', 'PasswordController@requestForm');
-Route::post('/password/request', 'PasswordController@handleRequest');
-Route::get('/password/update/{token}', 'PasswordController@showUpdateForm');
-Route::post('/password/update', 'PasswordController@updatePassword');
+Route::get('/enchere/actives', 'EnchereController@actives');
 
 Route::dispatch();

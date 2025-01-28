@@ -23,4 +23,12 @@ class Timbre extends CRUD {
         return $this->select(); 
     }
 
+    public function getById($id) {
+        $sql = "SELECT * FROM $this->table WHERE $this->primaryKey = :id LIMIT 1";
+        $stmt = $this->prepare($sql);
+        $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
 }

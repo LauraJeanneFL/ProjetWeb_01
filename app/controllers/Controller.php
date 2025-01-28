@@ -1,21 +1,29 @@
 <?php
+//contrôleur parent
 namespace App\Controllers;
 
 use App\Providers\View;
+use App\Providers\Validator;
 
 class Controller {
     protected $pdo;
-
-    public function __construct() {
-        $this->pdo = new \PDO('mysql:host=localhost;dbname=e2495693;charset=utf8', 'root', '');
-    }
-
+    
     public function render($view, $data = []) {
-        View::render($view, $data);
+        return View::render($view, $data);
     }
 
     public function redirect($url) {
         header('Location: ' . $url);
         exit;
+    }
+
+    protected function validateInput($data, $rules) {
+        $validator = new Validator;
+
+        foreach ($rules as $field => $rule) {
+            $validator->field($field, $data[$field] ?? '')->$rule();
+        }
+
+        return $validator->isSuccess() ? true : $validator->getErrors();
     }
 }

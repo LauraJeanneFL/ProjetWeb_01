@@ -9,63 +9,41 @@ use App\Providers\Auth;
 
 class UtilisateurController {
 
-    public function __construct(){
+    public function __construct() {
         Auth::session();
-        Auth::privilege(1);
     }
 
-    public function index() {
-        // Vérifie l'accès
-        $user = new Utilisateur();
-        $user->redirectIfNoAccess('admin');
-
-        $users = $user->getAll();
-
-        return View::render('utilisateur/login', ['users' => $users]); 
+    public function create() {
+        return View::render('utilisateur/create');
     }
 
-    public function create(){
-        $privilege = new Privilege;
-        $privileges = $privilege->select();
-        return View::render('user/create', ['privileges' => $privileges]);
-    }
-
-    public function store($data){
+    public function store($data) {
         $validator = new Validator;
         $validator->field('name', $data['name'])->min(2)->max(50);
-        $validator->field('username', $data['username'])->min(2)->max(50)->unique('User');
-        $validator->field('password', $data['password'])->min(6)->max(20);
-        $validator->field('privilege_id', $data['privilege_id'], "Privilege")->required()->number();
+        $validator->field('email', $data['email'])->email();
+        $validator->field('password', $data['password'])->min(6);
 
-        if($validator->isSuccess()){
-            $user = new Utilisateur();
-            $data['email'] = $data['username'];
-            $data['password'] = $user->hashPassword($data['password']);
-            // print_r($data);
-            // die();
-            $insert  = $user->insert($data);
-            if($insert){
-                return View::redirect('login');
-            }else{
-                return View::render('error');
-            }
-        }else{
+        if ($validator->isSuccess()) {
+            $user = new Utilisateur;
+            $user->insert($data);
+            return View::redirect('login');
+        } else {
             $errors = $validator->getErrors();
-            $privilege = new Privilege;
-            $privileges = $privilege->select();
-            return View::render('user/create', ['errors'=>$errors, 'inputs'=>$data, 'privileges' => $privileges]);
+            return View::render('utilisateur/create', ['errors' => $errors, 'inputs' => $data]);
         }
     }
 
-    public function login($data) {
-        $user = new Utilisateur();
-        //var_dump($data); // Vérifier ce qui est envoyé
-        if ($user->checkuser($data['username'], $data['password'])) {
-            $_SESSION['finger_print'] = md5($_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR']);
-            return View::redirect('dashboard'); 
-        }
-        return View::render('login', ['error' => 'Identifiants incorrects ou utilisateur inexistant.']);
+    public function login() {
+        return View::render('utilisateur/login');
     }
 
+    public function authenticate($data) {
+        // Logique d'authentification
+        return View::redirect('home');
+    }
 
+    public function logout() {
+        session_destroy();
+        return View::redirect('login');
+    }
 }

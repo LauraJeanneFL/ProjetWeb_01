@@ -3,15 +3,29 @@
 namespace App\Controllers;
 
 use App\Models\Utilisateur;
+use App\Providers\Validator;
 use App\Models\Password;
 use App\Providers\View;
 use App\Providers\Mail;
 
 class PasswordController extends Controller {
     public function requestReset() {
-        $this->logVisit('Password Reset Request');
-        return $this->render('password/request_reset');
+          return View::render('password/request');
     }
+
+    public function handleRequest($data) {
+        $validator = new Validator;
+        $validator->field('email', $data['email'])->email();
+
+        if ($validator->isSuccess()) {
+            // Logique pour envoyer un lien de réinitialisation de mot de passe
+            return View::render('password/success');
+        } else {
+            $errors = $validator->getErrors();
+            return View::render('password/request', ['errors' => $errors, 'inputs' => $data]);
+        }
+    }
+
 
     public function sendResetLink($data) {
         try {
@@ -39,41 +53,26 @@ class PasswordController extends Controller {
         }
     }
 
-    public function resetForm($token) {
-        try {
-            $passwordModel = new Password();
-            $resetEntry = $passwordModel->findByToken($token);
-
-            if (!$resetEntry) {
-                return $this->render('error', ['msg' => 'Token invalide ou expiré.']);
-            }
-
-            $this->logVisit('Password Reset Form');
-            return $this->render('password/reset_form', ['token' => $token]);
-        } catch (\Exception $e) {
-            return $this->render('error', ['msg' => 'Une erreur est survenue : ' . $e->getMessage()]);
-        }
+    public function reset($data) {
+        return View::render('password/reset', ['token' => $data['token'] ?? '']);
     }
 
-    public function updatePassword($data) {
-        try {
-            $passwordModel = new Password();
-            $resetEntry = $passwordModel->findByToken($data['token']);
+    public function update($data) {
+        $validator = new Validator;
+        $validator->field('password', $data['password'])->min(6)->max(20);
 
-            if (!$resetEntry) {
-                return $this->render('error', ['msg' => 'Token invalide ou expiré.']);
-            }
-
-            $utilisateur = new Utilisateur();
-            $utilisateur->updatePasswordByEmail($resetEntry['email'], $data['password']);
-            $passwordModel->deleteByEmail($resetEntry['email']);
-
-            return $this->render('password/success');
-        } catch (\Exception $e) {
-            return $this->render('password/reset_form', ['msg' => 'Une erreur est survenue : ' . $e->getMessage()]);
+        if ($validator->isSuccess()) {
+            // Logique pour mettre à jour le mot de passe
+            return View::redirect('login');
+        } else {
+            $errors = $validator->getErrors();
+            return View::render('password/reset', ['errors' => $errors, 'inputs' => $data]);
         }
     }
+}
 
+//-----------------------------------------
+/*
     private function logVisit($page) {
         $log = new \App\Models\Log();
         $log->insert([
@@ -83,4 +82,3 @@ class PasswordController extends Controller {
             'page' => $page
         ]);
     }
-}

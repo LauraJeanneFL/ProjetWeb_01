@@ -1,63 +1,6 @@
-{% block content %}
-<!doctype html>
-<html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Catalogue de produit</title>
-    <link rel="stylesheet" href="public/assets/css/main.css" />
-    <script src="assets/js/main.js" defer></script>
-    <script src="assets/js/mode-sombre.js" defer></script>
-  </head>
-
-  <body>
-    <header class="header">
-      <input type="checkbox" id="menu-toggle" class="menu-toggle" />
-      <label for="menu-toggle" id="hamburger" class="hamburger">&#9776;</label>
-      <nav class="header__nav" id="nav">
-        <ul class="header__nav_liens">
-          <li class="header__medaillon">
-            <img
-              src="assets/images-optimisees/Logos/logo-2-alt.webp"
-              alt="logo-navigation"
-            />
-          </li>
-          <li><a href="index.html">Accueil</a></li>
-          <li class="header__nav_deroulant">
-            <a href="fiche-produits.html">Portail d’enchère ▾</a>
-            <ul class="header__nav_sous-menu">
-              <li><a href="fiche-produits.html">Fiche d'enchère</a></li>
-              <li><a href="catalogue.html">Catalogue</a></li>
-            </ul>
-          </li>
-          <li class="header__nav_deroulant">
-            <a href="">A propos du Lord Reginal Stampee III ▾</a>
-            <ul class="header__nav_sous-menu">
-              <li><a href="">Biographie du Lord</a></li>
-              <li><a href="">La philatélie, c'est la vie!</a></li>
-              <li><a href="">Historique familiale</a></li>
-            </ul>
-          </li>
-          <li class="header__nav_deroulant">
-            <a href="">Langue ▾</a>
-            <ul class="header__nav_sous-menu">
-              <li><a href="">Français</a></li>
-              <li><a href="">Anglais</a></li>
-              <li><a href="">Allemand</a></li>
-            </ul>
-          </li>
-
-          <li><button class="bouton bouton-navigation">S'inscrire</button></li>
-          <li><button class="bouton bouton-navigation">Connexion</button></li>
-          <li>
-            <button class="button theme__switch" id="theme-switch">
-              Mode clair/sombre
-            </button>
-          </li>
-        </ul>
-      </nav>
-    </header>
+{{include('layouts/header.php')}}
     <main class="contenu__grille">
+    <h1>Catalogue des enchères</h1>
       <div id="bouton-filtres" class="bouton-filtres">
         <i class="fa-solid fa-sliders"></i>
       </div>
@@ -67,7 +10,7 @@
         </button>
         <div class="barre-filtres__conteneur">
           <h2 class="barre-filtres__titre">Filtrer par :</h2>
-          <form class="barre-filtres__formulaire">
+          <form class="barre-filtres__formulaire"  method="GET" action="{{ BASE }}/catalogue/index">
             <fieldset class="barre-filtres__categorie">
               <legend class="barre-filtres__legende">Type</legend>
               <ul class="barre-filtres__options">
@@ -353,11 +296,16 @@
         </div>
       </aside>
       <div class="grille">
+      {% for enchere in encheres %}
         <div class="grille__produit">
           <article class="carte-produit">
             <div>
+            <img
+              src="{{ BASE }}/{{ enchere.chemin_image }}"
+              alt="{{ enchere.nom }}"
+            />
               <img
-                src="assets/images-optimisees/Timbres/timbre-01.webp"
+                src="images-optimisees/Timbres/timbre-01.webp"
                 alt="image-timbre-01"
               />
               <button class="carte-produit__favori">❤️</button>
@@ -374,7 +322,7 @@
           <article class="carte-produit">
             <div>
               <img
-                src="assets/images-optimisees/Timbres/timbre-02.webp"
+                src="images-optimisees/Timbres/timbre-02.webp"
                 alt="image-timbre-02"
               />
               <button class="carte-produit__favori">❤️</button>
@@ -391,7 +339,7 @@
           <article class="carte-produit">
             <div>
               <img
-                src="assets/images-optimisees/Timbres/timbre-03.webp"
+                src="images-optimisees/Timbres/timbre-03.webp"
                 alt="image-timbre-03"
               />
               <button class="carte-produit__favori">❤️</button>
@@ -401,14 +349,14 @@
             </h1>
             <p class="carte-produit__texte">
               État : Neuf sans charnière. Timbre américain marquant le 500e
-              anniversaire de la découverte de l'Amérique.
+              anniversaire de la découverte de l Amérique.
             </p>
             <a class="carte-produit__bouton bouton" href="">Enchérir</a>
           </article>
           <article class="carte-produit">
             <div>
               <img
-                src="assets/images-optimisees/Timbres/timbre-04.webp"
+                src="images-optimisees/Timbres/timbre-04.webp"
                 alt="image-timbre-04"
               />
               <button class="carte-produit__favori">❤️</button>
@@ -425,7 +373,7 @@
           <article class="carte-produit">
             <div>
               <img
-                src="assets/images-optimisees/Timbres/timbre-05.webp"
+                src="images-optimisees/Timbres/timbre-05.webp"
                 alt="image-timbre-05"
               />
               <button class="carte-produit__favori">❤️</button>
@@ -442,7 +390,7 @@
           <article class="carte-produit">
             <div>
               <img
-                src="assets/images-optimisees/Timbres/timbre-06.webp"
+                src="images-optimisees/Timbres/timbre-06.webp"
                 alt="image-timbre-06"
               />
               <button class="carte-produit__favori">❤️</button>
@@ -459,7 +407,7 @@
           <article class="carte-produit">
             <div>
               <img
-                src="assets/images-optimisees/Timbres/timbre-07.webp"
+                src="images-optimisees/Timbres/timbre-07.webp"
                 alt="image-timbre-07"
               />
               <button class="carte-produit__favori">❤️</button>
@@ -468,7 +416,7 @@
               France 1993 Belle Epoque Toulouse-Lautrec 4.50F MNH
             </h1>
             <p class="carte-produit__texte">
-              État : Neuf sans charnière. Timbre rendant hommage à l'artiste
+              État : Neuf sans charnière. Timbre rendant hommage à l artiste
               Toulouse-Lautrec et la Belle Époque.
             </p>
             <a class="carte-produit__bouton bouton" href="">Enchérir</a>
@@ -476,7 +424,7 @@
           <article class="carte-produit">
             <div>
               <img
-                src="assets/images-optimisees/Timbres/timbre-08.webp"
+                src="images-optimisees/Timbres/timbre-08.webp"
                 alt="image-timbre-08"
               />
               <button class="carte-produit__favori">❤️</button>
@@ -493,7 +441,7 @@
           <article class="carte-produit">
             <div>
               <img
-                src="assets/images-optimisees/Timbres/timbre-09.webp"
+                src="images-optimisees/Timbres/timbre-09.webp"
                 alt="image-timbre-09"
               />
               <button class="carte-produit__favori">❤️</button>
@@ -510,7 +458,7 @@
           <article class="carte-produit">
             <div>
               <img
-                src="assets/images-optimisees/Timbres/timbre-10.webp"
+                src="images-optimisees/Timbres/timbre-10.webp"
                 alt="image-timbre-10"
               />
               <button class="carte-produit__favori">❤️</button>
@@ -527,7 +475,7 @@
           <article class="carte-produit">
             <div>
               <img
-                src="assets/images-optimisees/Timbres/timbre-11.webp"
+                src="images-optimisees/Timbres/timbre-11.webp"
                 alt="image-timbre-11"
               />
               <button class="carte-produit__favori">❤️</button>
@@ -537,14 +485,14 @@
             </h1>
             <p class="carte-produit__texte">
               État : Neuf sans charnière. Timbre autrichien illustrant Gustav
-              Klimt, icône de l'Art Nouveau.
+              Klimt, icône de l Art Nouveau.
             </p>
             <a class="carte-produit__bouton bouton" href="">Enchérir</a>
           </article>
           <article class="carte-produit">
             <div>
               <img
-                src="assets/images-optimisees/Timbres/timbre-12.webp"
+                src="images-optimisees/Timbres/timbre-12.webp"
                 alt="image-timbre-12"
               />
               <button class="carte-produit__favori">❤️</button>
@@ -559,79 +507,7 @@
           </article>
         </div>
       </div>
+       {% endfor %}
     </main>
+{{include('layouts/footer.php')}}
 
-    <footer class="pied-page">
-      <nav class="pied-page__navigation">
-        <div class="pied-page__section pied-page__section--droite">
-          <h3 class="pied-page__titre">Fonctionnement de la plateforme</h3>
-          <ul class="pied-page__liste">
-            <li class="pied-page__item"><a href="">Aide : Profil</a></li>
-            <li class="pied-page__item"><a href="">Aide : Connexion</a></li>
-            <li class="pied-page__item"><a href="">Aide : Inscription</a></li>
-            <li class="pied-page__item">
-              <a href="">Aide : Fiche d'enchère</a>
-            </li>
-            <li class="pied-page__item">
-              <a href="">Aide : Suivre une enchère</a>
-            </li>
-            <li class="pied-page__item">
-              <a href="">Aide : Comment placer une offre</a>
-            </li>
-          </ul>
-          <div class="pied-page__boutons">
-            <button class="pied-page__bouton">S'inscrire</button>
-            <button class="pied-page__bouton">Se connecter</button>
-          </div>
-        </div>
-
-        <div class="pied-page__logo">
-          <img
-            src="assets/images-optimisees/Logos/logo-2-alt.webp"
-            alt="Logo"
-            class="pied-page__logo-image"
-          />
-        </div>
-
-        <div class="pied-page__section pied-page__section--gauche">
-          <h3 class="pied-page__titre">Contactez-nous</h3>
-          <ul class="pied-page__liste">
-            <li class="pied-page__item"><a href="">Angleterre</a></li>
-            <li class="pied-page__item"><a href="">Canada</a></li>
-            <li class="pied-page__item"><a href="">USA</a></li>
-            <li class="pied-page__item"><a href="">Australie</a></li>
-          </ul>
-          <h3 class="pied-page__titre">Actualités</h3>
-          <ul class="pied-page__liste">
-            <li class="pied-page__item"><a href="">Timbre</a></li>
-            <li class="pied-page__item"><a href="">Enchère</a></li>
-            <li class="pied-page__item"><a href="">Bridge</a></li>
-          </ul>
-          <form
-            action="recherche.html"
-            method="GET"
-            class="pied-page__recherche"
-          >
-            <input
-              type="text"
-              placeholder="Rechercher..."
-              class="pied-page__recherche-input"
-              aria-label="Champ de recherche"
-            />
-            <button type="submit" class="pied-page__recherche-bouton">
-              🔍
-            </button>
-          </form>
-        </div>
-      </nav>
-
-      <div class="pied-page__infos">
-        <p>Conditions générales d'utilisation</p>
-        <p>Mentions légales</p>
-        <p>Cookies et confidentialité</p>
-        <p>Tous droits réservés - Stampee</p>
-      </div>
-    </footer>
-  </body>
-</html>
-{% endblock %}

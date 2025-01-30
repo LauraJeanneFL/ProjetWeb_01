@@ -3,29 +3,30 @@ namespace App\Providers;
 
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
-use Twig\TwigFunction;
-use App\Routes\Route;
 
 class View {
     static public function render($template, $data=[]){
         $loader = new FilesystemLoader('views');
         $twig = new Environment($loader);
+        $twig->addExtension(new \Twig\Extension\DebugExtension());
 
         $twig->addGlobal('asset', ASSET);
-        $twig->addGlobal('base', BASE);
+        $twig->addGlobal('BASE',  rtrim(BASE, '/'));
 
-        if (isset($_SESSION['finger_print']) && $_SESSION['finger_print'] === md5($_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'])) {
+        if(isset($_SESSION['finger_print']) and $_SESSION['finger_print']===md5($_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR'])){
             $guest = false;
-        } else {
+        }else{
             $guest = true;
         }
+
         $twig->addGlobal('guest', $guest);
         $twig->addGlobal('session', $_SESSION);
-
+        
         echo $twig->render($template.".php", $data);
     }
 
     static public function redirect($url){
-        header('location:'.BASE.'/'.$url);
+        header('Location: ' . BASE . '/' . ltrim($url, '/'));
+        exit;
     }
 }

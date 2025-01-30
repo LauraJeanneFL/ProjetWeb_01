@@ -1,26 +1,26 @@
-{% extends 'layout/base' %}
-{% block content %}
+{{include('layouts/header.php')}}
     <main>
+    <h1>Fiche produit</h1>
       <section class="produit">
         <div class="produit__conteneur">
           <aside class="produit__galerie">
             <div class="produit__galerie-miniatures">
               <img
-                src="assets/images-optimisees/Timbres/timbre-01.webp"
+                src="images-optimisees/Timbres/timbre-01.webp"
                 alt="Timbre 1"
                 onclick="changerImage(this.src)"
                 width="300"
                 height="200"
               />
               <img
-                src="assets/images-optimisees/Timbres/timbre-02.webp"
+                src="images-optimisees/Timbres/timbre-02.webp"
                 alt="Timbre 2"
                 onclick="changerImage(this.src)"
                 width="400"
                 height="300"
               />
               <img
-                src="assets/images-optimisees/Timbres/timbre-03.webp"
+                src="images-optimisees/Timbres/timbre-03.webp"
                 alt="Timbre 3"
                 onclick="changerImage(this.src)"
                 width="400"
@@ -30,7 +30,7 @@
           </aside>
           <section class="produit__image">
             <img
-              src="assets/images-optimisees/Timbres/timbre-01.webp"
+              src="images-optimisees/Timbres/timbre-01.webp"
               alt="Timbre rare"
               width="400"
               height="300"
@@ -78,7 +78,7 @@
               <p><strong>Pays d’origine:</strong> France</p>
               <p><strong>Condition:</strong> Parfaite</p>
               <p class="produit__description-texte">
-                Ce timbre historique datant de 1942 représente une œuvre d'art
+                Ce timbre historique datant de 1942 représente une œuvre d art
                 rare et bien conservée.
               </p>
               <div>
@@ -116,7 +116,7 @@
           <div class="galerie-produits__contenu">
             <article class="galerie-produits__carte">
               <img
-                src="assets/images-optimisees/Timbres/timbre-04.webp"
+                src="images-optimisees/Timbres/timbre-04.webp"
                 alt="Timbre 4"
                 width="400"
                 height="300"
@@ -127,7 +127,7 @@
             </article>
             <article class="galerie-produits__carte">
               <img
-                src="assets/images-optimisees/Timbres/timbre-05.webp"
+                src="images-optimisees/Timbres/timbre-05.webp"
                 alt="Timbre 5"
                 width="400"
                 height="300"
@@ -138,7 +138,7 @@
             </article>
             <article class="galerie-produits__carte">
               <img
-                src="assets/images-optimisees/Timbres/timbre-08.webp"
+                src="images-optimisees/Timbres/timbre-08.webp"
                 alt="Timbre 8"
                 width="400"
                 height="300"
@@ -149,7 +149,7 @@
             </article>
             <article class="galerie-produits__carte">
               <img
-                src="assets/images-optimisees/Timbres/timbre-10.webp"
+                src="images-optimisees/Timbres/timbre-10.webp"
                 alt="Timbre 10"
                 width="400"
                 height="300"
@@ -162,5 +162,5 @@
         </section>
       </section>
     </main>
-    {% extends 'layout/base' %}
-{% endblock %}
+{{include('layouts/footer.php')}}
+

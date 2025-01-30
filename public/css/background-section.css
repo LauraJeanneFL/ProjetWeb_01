@@ -1,0 +1,9 @@
+.background-section {
+  background-size: cover;
+  background-position: center;
+  height: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--espacement-tout-petit);
+}

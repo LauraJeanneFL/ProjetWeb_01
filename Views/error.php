@@ -1,9 +1,8 @@
-{{base}}
-
-{% block title %}Erreur 404 - Page non trouvée{% endblock %}
-
-{% block content %}
-<h1>Erreur 404 : Page non trouvée</h1>
-<p>La page que vous recherchez n'existe pas ou a été déplacée.</p>
-<a href="{{ home}}">Retour à l'accueil</a>
-{% endblock %}
+{{ include('layouts/header.php', {title:'Error 404'})}}
+<link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
+    <div class="container">
+        <h2>Error</h2>
+        <strong class="error"> 404 page not found! </strong>
+        <p>{{ msg }}</p>
+    </div>
+{{include('layouts/footer.php')}}

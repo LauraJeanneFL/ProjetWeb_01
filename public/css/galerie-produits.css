@@ -1,0 +1,30 @@
+.galerie-produits {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--couleur-marque);
+} 
+.galerie-produits__contenu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; 
+  gap: var(--espacement-grand);
+}
+
+.galerie-produits__carte {
+  max-width: 300px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  border: 1px solid var(--couleur-sombre);
+  padding: var(--espacement-petit);
+  border-radius: var(--espacement-tres-petit);
+  background-color: var(--couleur-claire);
+}
+
+.galerie-produits__bouton {
+  margin-top: auto;
+  align-items: center;
+}

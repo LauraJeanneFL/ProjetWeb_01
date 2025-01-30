@@ -1,3 +1,4 @@
 <?php
 define('BASE', '/ProjetWeb/VsCode');
-define('ASSET', BASE . '/public/assets');
+define('ASSET', '/ProjetWeb/VsCode/public/');
+

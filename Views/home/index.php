@@ -1,6 +1,4 @@
-{{base}}
-
-{% block content %}
+{{include('layouts/header.php')}}
     <main>
       <section class="banniere">
         <h1 class="banniere__titre">
@@ -23,7 +21,7 @@
 
       <section class="section__background">
          <img
-          src="assets/images-optimisees/Photos-banniere/timbres-sombres.webp"
+          src="images-optimisees/Photos-banniere/timbres-sombres.webp"
           alt="Timbres sombres"
           class="section__image"
           width="1920"
@@ -106,7 +104,7 @@
               l’histoire et la culture.”
             </p>
             <img
-              src="assets/images-optimisees/Photo-articles/lord-selfie.webp"
+              src="images-optimisees/Photo-articles/lord-selfie.webp"
               alt="Lord Stampee"
               class="hero__carte-image"
             />
@@ -134,7 +132,7 @@
           <div class="carrousel__piste">
             <article class="carrousel__item">
               <img
-                src="assets/images-optimisees/Photo-articles/timbre-fondNoir.webp"
+                src="images-optimisees/Photo-articles/timbre-fondNoir.webp"
                 alt="Le monde turc"
                 class="carrousel__image"
               />
@@ -144,7 +142,7 @@
             </article>
             <article class="carrousel__item">
               <img
-                src="assets/images-optimisees/Photo-articles/timbre-loupe.webp"
+                src="images-optimisees/Photo-articles/timbre-loupe.webp"
                 alt="Timbre du monde"
                 class="carrousel__image"
               />
@@ -154,7 +152,7 @@
             </article>
             <article class="carrousel__item">
               <img
-                src="assets/images-optimisees/Photo-articles/timbres-fondBois.webp"
+                src="images-optimisees/Photo-articles/timbres-fondBois.webp"
                 alt="Timbre antique"
                 class="carrousel__image"
               />
@@ -197,7 +195,7 @@
         <div class="offres__grille">
           <article class="offres__item">
             <img
-              src="assets/images-optimisees/Timbres/timbre-01.webp"
+              src="images-optimisees/Timbres/timbre-01.webp"
               alt="Timbre vedette"
               class="offres__image"
             />
@@ -209,7 +207,7 @@
           </article>
           <article class="offres__item">
             <img
-              src="assets/images-optimisees/Timbres/timbre-02.webp"
+              src="images-optimisees/Timbres/timbre-02.webp"
               alt="Timbre vedette"
               class="offres__image"
             />
@@ -221,7 +219,7 @@
           </article>
           <article class="offres__item">
             <img
-              src="assets/images-optimisees/Timbres/timbre-03.webp"
+              src="/images-optimisees/Timbres/timbre-03.webp"
               alt="Timbre vedette"
               class="offres__image"
             />
@@ -233,7 +231,7 @@
           </article>
           <article class="offres__item">
             <img
-              src="assets/images-optimisees/Timbres/timbre-18.webp"
+              src="images-optimisees/Timbres/timbre-18.webp"
               alt="Timbre vedette"
               class="offres__image"
             />
@@ -245,19 +243,19 @@
           </article>
           <article class="offres__item">
             <img
-              src="assets/images-optimisees/Timbres/timbre-11.webp"
+              src="images-optimisees/Timbres/timbre-11.webp"
               alt="Timbre vedette"
               class="offres__image"
             />
             <div class="offres__details">
-              <h6 class="offres__description">Timbre de l'Empire</h6>
+              <h6 class="offres__description">Timbre de l Empire</h6>
               <span class="offres__prix">CAD 60.00</span>
               <button class="bouton">Voir</button>
             </div>
           </article>
           <article class="offres__item">
             <img
-              src="assets/images-optimisees/Timbres/timbre-13.webp"
+              src="images-optimisees/Timbres/timbre-13.webp"
               alt="Timbre vedette"
               class="offres__image"
             />
@@ -283,7 +281,7 @@
           <article class="carte actualites__article">
             <div class="carte__image-container">
               <img
-                src="assets/images-optimisees/Photos-banniere/carte-monde.webp"
+                src="images-optimisees/Photos-banniere/carte-monde.webp"
                 alt="Lancement de Stampee"
                 class="carte__image"
               />
@@ -306,7 +304,7 @@
           <article class="carte actualites__article">
             <div class="carte__image-container">
               <img
-                src="assets/images-optimisees/Photos-banniere/timbres-insectes.webp"
+                src="images-optimisees/Photos-banniere/timbres-insectes.webp"
                 alt="Timbre historique"
                 class="carte__image"
               />
@@ -327,7 +325,7 @@
           <article class="carte actualites__article">
             <div class="carte__image-container">
               <img
-                src="assets/images-optimisees/Photo-articles/lords-sablier.webp"
+                src="images-optimisees/Photo-articles/lords-sablier.webp"
                 alt="Conseils pour collectionneurs"
                 class="carte__image"
               />
@@ -350,4 +348,4 @@
         </div>
       </section>
     </main>
-{% endblock %}
+{{include('layouts/footer.php')}}

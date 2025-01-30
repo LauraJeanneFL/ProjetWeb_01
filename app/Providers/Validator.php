@@ -2,7 +2,6 @@
 namespace App\Providers;
 
 class Validator {
-
     private $errors = array();
     private $key;
     private $value;
@@ -40,19 +39,19 @@ class Validator {
         return $this;
     }
 
+    public function email() {
+        if (!filter_var($this->value, FILTER_VALIDATE_EMAIL)) {
+            $this->errors[$this->key] = "$this->name doit être une adresse e-mail valide.";
+        }
+        return $this;
+    }
+
     public function number(){
         if(!empty($this->value) && !is_numeric($this->value)){
             $this->errors[$this->key]="$this->name must be a number.";
         }
         return $this;
     }
-
-    public function email() {
-    if (!filter_var($this->value, FILTER_VALIDATE_EMAIL)) {
-        $this->errors[$this->key] = "$this->name doit être une adresse e-mail valide.";
-    }
-    return $this;
-}
 
     public function unique($model){
         $model = 'App\\Models\\'.$model;

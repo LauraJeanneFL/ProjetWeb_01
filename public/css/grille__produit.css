@@ -1,0 +1,15 @@
+.grille__produit {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--espacement-moyen);
+  padding: 20px;
+}
+
+@media (max-width: 875px) {
+  .grille__produit {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--espacement-petit);
+    padding: var(--espacement-moyen);
+  }
+}

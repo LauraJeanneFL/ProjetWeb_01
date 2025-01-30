@@ -8,25 +8,37 @@ use App\Controllers\UtilisateurController;
 use App\Controllers\FavorisController;
 use App\Controllers\PasswordController;
 
-Route::get('/home', 'HomeController@index');
-Route::get('/catalogue', 'CatalogueController@index'); 
-Route::get('/fiche-produit/{id}', 'FicheProduitController@show');
+$base = rtrim(BASE, '/');
 
-// Gestion des utilisateurs
+Route::get('test', 'HomeController@index' );
+
+Route::get('/home/index', 'HomeController@index');
+Route::get('/catalogue/index', 'CatalogueController@index');
+Route::get('/catalogue/show/{id}', 'CatalogueController@show');
+Route::get('/fiche/fiche-produit', 'FicheProduitController@show');
+
 Route::get('/utilisateur/login', 'UtilisateurController@login');
 Route::post('/utilisateur/login', 'UtilisateurController@handleLogin');
+
 Route::get('/utilisateur/register', 'UtilisateurController@register');
 Route::post('/utilisateur/register', 'UtilisateurController@handleRegister');
-Route::get('/utilisateur/password-reset', 'UtilisateurController@passwordReset');
-Route::post('/utilisateur/password-reset', 'UtilisateurController@handlePasswordReset');
 
-//Gestions des enchères
-Route::get('/enchere', 'EnchereController@index');
-Route::get('/enchere/create', 'EnchereController@create');
-Route::post('/enchere/create', 'EnchereController@store');
-Route::get('/enchere/edit/{id}', 'EnchereController@edit');
-Route::post('/enchere/edit/{id}', 'EnchereController@update');
-Route::get('/enchere/delete/{id}', 'EnchereController@delete');
-Route::get('/enchere/actives', 'EnchereController@actives');
+Route::get('/utilisateur/profil', 'UtilisateurController@profile');
+Route::post('/utilisateur/profil', 'UtilisateurController@profile');
+Route::get('/utilisateur/logout', 'UtilisateurController@logout');
+
+Route::post('/timbre/ajouter', 'TimbreController@ajouter');
+
+Route::get('/enchere/liste', 'EnchereController@listeActive');
+Route::get('/enchere/archive', 'EnchereController@listeArchivee');
+
+Route::get('/enchere/recherche', 'EnchereController@rechercher');
+Route::post('/enchere/upload', 'EnchereController@upload');
+
+Route::get($base . '/', function() {
+    header("Location: " . BASE . "/home");
+    exit;
+});
 
 Route::dispatch();
+

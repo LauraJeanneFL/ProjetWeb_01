@@ -1,0 +1,24 @@
+body {
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+  font-family: var(--police-corps);
+  margin: 0;
+  background-color: var(--couleur-clair-accent);
+  color: var(--couleur-police-noire);
+}
+
+body.theme--sombre {
+  background-color: var(--couleur-sombre);
+  color: var(--couleur-police-blanche);
+}
+
+body.theme--sombre .carrousel__bouton {
+  background-color: rgba(255, 255, 255, 0.5);
+  color: var(--couleur-police-noire);
+}
+
+body.theme--sombre .carrousel__action {
+  background-color: var(--couleur-sombre);
+  color: var(--couleur-police-noire);
+}

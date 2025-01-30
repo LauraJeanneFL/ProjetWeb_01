@@ -1,0 +1,6 @@
+.grille-cartes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--espacement-grand);
+  padding: var(--espacement-grand);
+}

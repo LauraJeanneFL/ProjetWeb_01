@@ -1,0 +1,29 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--espacement-moyen);
+  background-color: var(--couleur-sombre);
+  color: var(--couleur-police-blanche);
+}
+
+.header li {
+  margin: 0;
+  padding: 0;
+}
+
+.header a {
+  color: var(--couleur-police-blanche);
+  text-decoration: none;
+  text-align: center;
+  padding: var(--espacement-petit);
+}
+
+.header__medaillon img {
+  max-width: 100%;
+}
+
+@media (max-width: 880px) {
+  .header ul li {
+    margin: var(--espacement-tres-petit);
+  }
+}

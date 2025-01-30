@@ -4,14 +4,17 @@ namespace App\Models;
 use PDO;
 use App\Providers\Database;
 
-abstract class CRUD extends PDO {
+abstract class CRUD {
     protected $pdo;
     protected $table;
     protected $primaryKey = 'id';
     protected $fillable = [];
 
-   final public function __construct() {
-        parent::__construct('mysql:host=localhost; dbname=e2495693; port=3306; charset=utf8', 'root', '');
+  final public function __construct() {
+        $this->pdo = new PDO('mysql:host=localhost;dbname=e2495693;charset=utf8;unix_socket=/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock', 'root', '');
+        $this->pdo->exec("SET NAMES utf8mb4"); // 🔥 Force l'encodage UTF-8
+        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     }
 
     final public function select($field = null, $order='ASC'){
@@ -19,7 +22,7 @@ abstract class CRUD extends PDO {
             $field = $this->primaryKey;
         }
         $sql= "SELECT * FROM {$this->table} ORDER BY {$field} {$order}";
-        if($stmt = $this->query($sql)){
+        if($stmt = $this->pdo->query($sql)){
             return $stmt->fetchAll();
         }else{
             return false;
@@ -28,7 +31,7 @@ abstract class CRUD extends PDO {
 
    final public function selectId($value){
         $sql= "SELECT * FROM $this->table WHERE $this->primaryKey = :$this->primaryKey";
-        $stmt= $this->prepare($sql);
+        $stmt= $this->pdo->prepare($sql);
         $stmt->bindValue(":$this->primaryKey", $value);
         $stmt->execute();
         $count = $stmt->rowCount();
@@ -56,12 +59,12 @@ abstract class CRUD extends PDO {
 
         $sql = "INSERT INTO $this->table ($fieldName) VALUES($fieldValue)";
 
-        $stmt = $this->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         foreach($data as $key=>$value){
             $stmt->bindValue(":$key", $value);
         }
         if($stmt->execute()){
-            return $this->lastInsertId();
+            return $this->pdo->lastInsertId();
         }else{
             return false;
         }
@@ -79,7 +82,7 @@ abstract class CRUD extends PDO {
 
         $sql = "UPDATE $this->table SET $fieldName WHERE $this->primaryKey = :$this->primaryKey";
         $data[$this->primaryKey] = $id;
-        $stmt = $this->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         foreach($data as $key=>$value){
             $stmt->bindValue(":$key", $value);
         }
@@ -93,7 +96,7 @@ abstract class CRUD extends PDO {
     final public function delete($id){
         if($this->selectId($id)){
             $sql = "DELETE FROM $this->table WHERE $this->primaryKey = :$this->primaryKey";
-            $stmt = $this->prepare($sql);
+            $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":$this->primaryKey", $id);
             if($stmt->execute()){
                 return true;
@@ -107,7 +110,7 @@ abstract class CRUD extends PDO {
 
     final public function unique($field, $value){
         $sql = "SELECT * FROM $this->table WHERE $field = :$field";
-        $stmt = $this->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue("$field", $value);
         $stmt->execute();
         $count = $stmt->rowCount();

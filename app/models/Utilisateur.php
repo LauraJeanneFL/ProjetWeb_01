@@ -5,7 +5,7 @@ use App\Models\CRUD;
 use App\Providers\View;
 
 class Utilisateur extends CRUD{
-    protected $table = "user";
+    protected $table = "utilisateur";  
     protected $primaryKey = "id";
     protected $fillable = [
         'id_utilisateur', 
@@ -26,23 +26,20 @@ class Utilisateur extends CRUD{
     public function checkuser($username, $password) {
         $user = $this->unique('nom_utilisateur', $username); 
         if ($user) {
-            // Compare le mot de passe brut avec le mot de passe haché
             if (password_verify($password, $user['mot_de_passe'])) {
-                // Initialisez les variables de session après une connexion réussie
                 session_regenerate_id();
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_name'] = $user['nom_utilisateur'];
-                $_SESSION['role'] = $user['role'];
+                $_SESSION['finger_print'] = md5($_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']);
                 return true;
-            } else {
-                error_log("Mot de passe incorrect pour l'utilisateur $username");
+            }else{
+                return false;
             }
-        } else {
-            error_log("Utilisateur $username non trouvé");
+        }else{
+            return false;
         }
-        return false;
     }
-
+    
     public function redirectIfNoAccess($requiredRole) {
         if (!$this->hasAccess($requiredRole)) {
             error_log("Accès refusé pour le rôle requis : $requiredRole");
@@ -82,13 +79,6 @@ class Utilisateur extends CRUD{
     }   
 
     // Sécuriser la déconnexion
-    public function logout() {
-        session_unset();
-        session_destroy();
-        setcookie(session_name(), '', time() - 3600, '/');
-        header("Location: /ProgWebAvancee/Evaluations/TP3/login");
-        exit;
-    }
     public function findByEmail($email) {
         $query = "SELECT * FROM utilisateur WHERE email = :email";
         $params = [':email' => $email];
@@ -106,3 +96,13 @@ class Utilisateur extends CRUD{
         return $this->select(); 
     }
 }
+
+/*
+  public function logout() {
+        session_unset();
+        session_destroy();
+        setcookie(session_name(), '', time() - 3600, '/');
+        header("Location: /ProgWebAvancee/Evaluations/TP3/login");
+        exit;
+    }
+*/

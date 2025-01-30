@@ -70,15 +70,3 @@ class PasswordController extends Controller {
         }
     }
 }
-
-//-----------------------------------------
-/*
-    private function logVisit($page) {
-        $log = new \App\Models\Log();
-        $log->insert([
-            'id_utilisateur' => $_SESSION['user_id'] ?? null,
-            'ip' => $_SERVER['REMOTE_ADDR'],
-            'date' => date('Y-m-d H:i:s'),
-            'page' => $page
-        ]);
-    }

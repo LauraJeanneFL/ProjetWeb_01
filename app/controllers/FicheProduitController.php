@@ -14,7 +14,7 @@ class FicheProduitController {
             $produit = $timbre->selectId($data['id']);
 
             if ($produit) {
-                return View::render('fiche-produit', ['produit' => $produit]);
+                return View::render('fiche/fiche-produit', ['produit' => $produit]);
             }
         }
 

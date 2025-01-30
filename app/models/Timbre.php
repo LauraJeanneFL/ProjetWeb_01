@@ -23,9 +23,23 @@ class Timbre extends CRUD {
         return $this->select(); 
     }
 
+    public function uploadImage($file) {
+        $targetDir = "uploads/";
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
+
+        $targetFile = $targetDir . basename($file["name"]);
+        if (move_uploaded_file($file["tmp_name"], $targetFile)) {
+            return $targetFile;
+        } else {
+            throw new \Exception("Erreur lors de l'upload de l'image.");
+        }
+    }
+
     public function getById($id) {
         $sql = "SELECT * FROM $this->table WHERE $this->primaryKey = :id LIMIT 1";
-        $stmt = $this->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch();

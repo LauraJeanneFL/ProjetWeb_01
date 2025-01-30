@@ -20,7 +20,7 @@ class Password extends CRUD {
     }
 
     public function findByToken($token) {
-        return $this->select(['*'], ['token' => $token], 1); // Limite à une ligne
+        return $this->select(['*'], ['token' => $token], 1);
     }
 
     public function deleteByEmail($email) {
